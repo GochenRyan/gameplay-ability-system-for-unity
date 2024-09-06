@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1261c2b342e03224ebc341132b01bf92, type: 3}
+  m_Name: DeathVFX
+  m_EditorClassIdentifier: 
+  Description: 
+  RequiredTags: []
+  ImmunityTags: []
+  VfxPrefab: {fileID: 2932327223734138908, guid: 20fb7333cf84f5444bc34d2f8e162ee2, type: 3}
+  IsAttachToTarget: 1
+  Offset: {x: 0, y: 0, z: 0}
+  Rotation: {x: 0, y: 0, z: 0}
+  Scale: {x: 1, y: 1, z: 1}
+  ActiveWhenAdded: 0

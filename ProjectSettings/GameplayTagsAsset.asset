@@ -16,12 +16,174 @@ MonoBehaviour:
   - _id: 1
     _name: Root
     _depth: -1
+  - _id: 4
+    _name: Faction
+    _depth: 0
+  - _id: 7
+    _name: Enemy
+    _depth: 1
+  - _id: 8
+    _name: Player
+    _depth: 1
+  - _id: 3
+    _name: State
+    _depth: 0
+  - _id: 10
+    _name: Buff
+    _depth: 1
+  - _id: 14
+    _name: AttackUp
+    _depth: 2
+  - _id: 9
+    _name: Debuff
+    _depth: 1
+  - _id: 12
+    _name: Fire
+    _depth: 2
+  - _id: 11
+    _name: Cold
+    _depth: 2
   - _id: 2
     _name: Ability
     _depth: 0
+  - _id: 20
+    _name: Die
+    _depth: 1
+  - _id: 15
+    _name: TripleBullet
+    _depth: 1
+  - _id: 13
+    _name: Attack
+    _depth: 1
+  - _id: 5
+    _name: Event
+    _depth: 0
+  - _id: 18
+    _name: Ban
+    _depth: 1
+  - _id: 19
+    _name: Move
+    _depth: 2
+  - _id: 17
+    _name: Moving
+    _depth: 1
+  - _id: 6
+    _name: CD
+    _depth: 0
+  - _id: 16
+    _name: TripleBullet
+    _depth: 1
   Tags:
+  - _name: Faction
+    _hashCode: -168968830
+    _shortName: Faction
+    _ancestorHashCodes: 
+    _ancestorNames: []
+  - _name: Faction.Enemy
+    _hashCode: -1091112840
+    _shortName: Enemy
+    _ancestorHashCodes: 82bdedf5
+    _ancestorNames:
+    - Faction
+  - _name: Faction.Player
+    _hashCode: 1030057057
+    _shortName: Player
+    _ancestorHashCodes: 82bdedf5
+    _ancestorNames:
+    - Faction
+  - _name: State
+    _hashCode: 1695958603
+    _shortName: State
+    _ancestorHashCodes: 
+    _ancestorNames: []
+  - _name: State.Buff
+    _hashCode: 743086286
+    _shortName: Buff
+    _ancestorHashCodes: 4b461665
+    _ancestorNames:
+    - State
+  - _name: State.Buff.AttackUp
+    _hashCode: -855273027
+    _shortName: AttackUp
+    _ancestorHashCodes: 4b461665ce984a2c
+    _ancestorNames:
+    - State
+    - State.Buff
+  - _name: State.Debuff
+    _hashCode: -1227811357
+    _shortName: Debuff
+    _ancestorHashCodes: 4b461665
+    _ancestorNames:
+    - State
+  - _name: State.Debuff.Fire
+    _hashCode: 1821799197
+    _shortName: Fire
+    _ancestorHashCodes: 4b461665e315d1b6
+    _ancestorNames:
+    - State
+    - State.Debuff
+  - _name: State.Debuff.Cold
+    _hashCode: 202012689
+    _shortName: Cold
+    _ancestorHashCodes: 4b461665e315d1b6
+    _ancestorNames:
+    - State
+    - State.Debuff
   - _name: Ability
     _hashCode: -523153736
     _shortName: Ability
     _ancestorHashCodes: 
     _ancestorNames: []
+  - _name: Ability.Die
+    _hashCode: 265453460
+    _shortName: Die
+    _ancestorHashCodes: b84ed1e0
+    _ancestorNames:
+    - Ability
+  - _name: Ability.TripleBullet
+    _hashCode: -486411538
+    _shortName: TripleBullet
+    _ancestorHashCodes: b84ed1e0
+    _ancestorNames:
+    - Ability
+  - _name: Ability.Attack
+    _hashCode: 115429334
+    _shortName: Attack
+    _ancestorHashCodes: b84ed1e0
+    _ancestorNames:
+    - Ability
+  - _name: Event
+    _hashCode: 667645442
+    _shortName: Event
+    _ancestorHashCodes: 
+    _ancestorNames: []
+  - _name: Event.Ban
+    _hashCode: 886515543
+    _shortName: Ban
+    _ancestorHashCodes: 0276cb27
+    _ancestorNames:
+    - Event
+  - _name: Event.Ban.Move
+    _hashCode: -1122116332
+    _shortName: Move
+    _ancestorHashCodes: 0276cb275727d734
+    _ancestorNames:
+    - Event
+    - Event.Ban
+  - _name: Event.Moving
+    _hashCode: 798883614
+    _shortName: Moving
+    _ancestorHashCodes: 0276cb27
+    _ancestorNames:
+    - Event
+  - _name: CD
+    _hashCode: -1137859925
+    _shortName: CD
+    _ancestorHashCodes: 
+    _ancestorNames: []
+  - _name: CD.TripleBullet
+    _hashCode: -160069143
+    _shortName: TripleBullet
+    _ancestorHashCodes: aba22dbc
+    _ancestorNames:
+    - CD

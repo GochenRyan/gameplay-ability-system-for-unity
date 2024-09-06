@@ -1,11 +1,14 @@
+using GAS.Runtime;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Playables;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private PlayerInput _input;
+    private AbilitySystemComponent _asc;
 
     void Awake()
     {
@@ -15,8 +18,16 @@ public class Player : MonoBehaviour
         _input.Enable();
         _input.Player.Move.performed += OnActivateMove;
         _input.Player.Move.canceled += OnDeactivateMove;
-        _input.Player.Fire.performed += OnFire;
-        _input.Player.Sweep.performed += OnSweep;
+        _input.Player.Attack.performed += Attack_performed;
+        _input.Player.Skill.performed += Skill_performed;
+    }
+
+    private void Skill_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+    }
+
+    private void Attack_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
     }
 
     private void OnDestroy()
@@ -24,13 +35,12 @@ public class Player : MonoBehaviour
         _input.Disable();
         _input.Player.Move.performed -= OnActivateMove;
         _input.Player.Move.canceled -= OnDeactivateMove;
-        _input.Player.Fire.performed -= OnFire;
-        _input.Player.Sweep.performed -= OnSweep;
+        _input.Player.Attack.performed -= Attack_performed;
+        _input.Player.Skill.performed -= Skill_performed;
     }
 
     void Update()
     {
-        // Player朝向始终面向鼠标
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var dir = (mousePos - transform.position);
         dir.z = 0;
@@ -38,11 +48,28 @@ public class Player : MonoBehaviour
         transform.up = dir;
     }
 
+    public void Init()
+    {
+        _asc.InitWithPreset(1);
+        InitAttribute();
+    }
+
+    void InitAttribute()
+    {
+        _asc.AttrSet<AS_Fight>().InitHP(100);
+        _asc.AttrSet<AS_Fight>().InitAttack(10);
+        _asc.AttrSet<AS_Fight>().InitSpeed(8);
+
+        //_asc.AttrSet<AS_Fight>().HP.RegisterPostBaseValueChange(OnHpChange);
+        //_asc.AbilityContainer.AbilitySpecs()[ability.Die.Name].RegisterEndAbility(OnDie);
+    }
+
     private void OnDie()
     {
         GameRunner.Instance.GameOver();
         Destroy(gameObject);
     }
+
 
     void OnActivateMove(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
@@ -57,13 +84,5 @@ public class Player : MonoBehaviour
     void OnDeactivateMove(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         _rb.velocity = Vector2.zero;
-    }
-
-    void OnFire(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
-    }
-
-    void OnSweep(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    {
     }
 }

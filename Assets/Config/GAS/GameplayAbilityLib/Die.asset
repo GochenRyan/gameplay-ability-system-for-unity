@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d763af469c524557946c477b9bea3a46, type: 3}
+  m_Name: Die
+  m_EditorClassIdentifier: 
+  Description: 
+  UniqueName: Die
+  Cost: {fileID: 0}
+  Cooldown: {fileID: 0}
+  CooldownTime: 0
+  AssetTags:
+  - _name: Ability.Die
+    _hashCode: 265453460
+    _shortName: Die
+    _ancestorHashCodes: b84ed1e0
+    _ancestorNames:
+    - Ability
+  CancelAbilityTags:
+  - _name: Ability.Attack
+    _hashCode: 115429334
+    _shortName: Attack
+    _ancestorHashCodes: b84ed1e0
+    _ancestorNames:
+    - Ability
+  - _name: Ability.TripleBullet
+    _hashCode: -486411538
+    _shortName: TripleBullet
+    _ancestorHashCodes: b84ed1e0
+    _ancestorNames:
+    - Ability
+  BlockAbilityTags: []
+  ActivationOwnedTags:
+  - _name: Event.Ban.Move
+    _hashCode: -1122116332
+    _shortName: Move
+    _ancestorHashCodes: 0276cb275727d734
+    _ancestorNames:
+    - Event
+    - Event.Ban
+  ActivationRequiredTags: []
+  ActivationBlockedTags: []
+  manualEndAbility: 0
+  FrameCount: 15
+  DurationalCues:
+  - trackName: 
+    clipEvents:
+    - startFrame: 1
+      durationFrame: 13
+      cue: {fileID: 11400000, guid: 1ae9fa982c1e8794c9792aaa26b9390a, type: 2}
+  InstantCues: []
+  ReleaseGameplayEffect: []
+  BuffGameplayEffects: []
+  InstantTasks: []
+  OngoingTasks: []

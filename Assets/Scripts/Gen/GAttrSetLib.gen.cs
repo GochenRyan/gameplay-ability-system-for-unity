@@ -8,79 +8,6 @@ using System.Collections.Generic;
 
 namespace GAS.Runtime
 {
-    public class AS_Bullet : AttributeSet
-    {
-        #region Attack
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public AttributeBase Attack { get; } = new ("AS_Bullet", "Attack", 0f, CalculateMode.Stacking, (SupportedOperation)31, float.MinValue, float.MaxValue);
-
-        public void InitAttack(float value)
-        {
-            Attack.SetBaseValue(value);
-            Attack.SetCurrentValue(value);
-        }
-
-        public void SetCurrentAttack(float value)
-        {
-            Attack.SetCurrentValue(value);
-        }
-
-        public void SetBaseAttack(float value)
-        {
-            Attack.SetBaseValue(value);
-        }
-
-        public void SetMinAttack(float value)
-        {
-            Attack.SetMinValue(value);
-        }
-
-        public void SetMaxAttack(float value)
-        {
-            Attack.SetMaxValue(value);
-        }
-
-        public void SetMinMaxAttack(float min, float max)
-        {
-            Attack.SetMinMaxValue(min, max);
-        }
-
-        #endregion Attack
-
-        public override AttributeBase this[string key]
-        {
-            get
-            {
-                switch (key)
-                {
-                    case "Attack":
-                        return Attack;
-                }
-
-                return null;
-            }
-        }
-
-        public override string[] AttributeNames { get; } =
-        {
-            "Attack",
-        };
-
-        public override void SetOwner(AbilitySystemComponent owner)
-        {
-            _owner = owner;
-            Attack.SetOwner(owner);
-        }
-
-        public static class Lookup
-        {
-            public const string Attack = "AS_Bullet.Attack";
-        }
-    }
-
     public class AS_Fight : AttributeSet
     {
         #region Attack
@@ -294,13 +221,11 @@ namespace GAS.Runtime
         public static readonly Dictionary<string, Type> AttrSetTypeDict = new Dictionary<string, Type>()
         {
             { "Fight", typeof(AS_Fight) },
-            { "Bullet", typeof(AS_Bullet) },
         };
 
         public static readonly Dictionary<Type, string> TypeToName = new Dictionary<Type, string>
         {
             { typeof(AS_Fight), nameof(AS_Fight) },
-            { typeof(AS_Bullet), nameof(AS_Bullet) },
         };
 
         public static List<string> AttributeFullNames = new List<string>()
@@ -309,7 +234,6 @@ namespace GAS.Runtime
             "AS_Fight.Speed",
             "AS_Fight.Attack",
             "AS_Fight.Defense",
-            "AS_Bullet.Attack",
         };
     }
 }

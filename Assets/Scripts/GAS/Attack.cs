@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Attack : AbstractAbility<AttackAsset>
 {
-    public GameObject bulletPrefab => AbilityAsset.bulletPrefab;
-
     public Attack(AttackAsset abilityAsset) : base(abilityAsset)
     {
 

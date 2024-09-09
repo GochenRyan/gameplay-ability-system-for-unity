@@ -12,9 +12,8 @@ namespace GAS.Runtime
         public static GameplayTag Ability { get; } = new GameplayTag("Ability");
         public static GameplayTag Ability_Attack { get; } = new GameplayTag("Ability.Attack");
         public static GameplayTag Ability_Die { get; } = new GameplayTag("Ability.Die");
-        public static GameplayTag Ability_TripleBullet { get; } = new GameplayTag("Ability.TripleBullet");
+        public static GameplayTag Ability_Equip { get; } = new GameplayTag("Ability.Equip");
         public static GameplayTag CD { get; } = new GameplayTag("CD");
-        public static GameplayTag CD_TripleBullet { get; } = new GameplayTag("CD.TripleBullet");
         public static GameplayTag Event { get; } = new GameplayTag("Event");
         public static GameplayTag Event_Ban { get; } = new GameplayTag("Event.Ban");
         public static GameplayTag Event_Ban_Move { get; } = new GameplayTag("Event.Ban.Move");
@@ -34,9 +33,8 @@ namespace GAS.Runtime
             ["Ability"] = Ability,
             ["Ability.Attack"] = Ability_Attack,
             ["Ability.Die"] = Ability_Die,
-            ["Ability.TripleBullet"] = Ability_TripleBullet,
+            ["Ability.Equip"] = Ability_Equip,
             ["CD"] = CD,
-            ["CD.TripleBullet"] = CD_TripleBullet,
             ["Event"] = Event,
             ["Event.Ban"] = Event_Ban,
             ["Event.Ban.Move"] = Event_Ban_Move,

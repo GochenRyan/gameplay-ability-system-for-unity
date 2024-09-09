@@ -46,11 +46,11 @@ MonoBehaviour:
   - _id: 2
     _name: Ability
     _depth: 0
+  - _id: 21
+    _name: Equip
+    _depth: 1
   - _id: 20
     _name: Die
-    _depth: 1
-  - _id: 15
-    _name: TripleBullet
     _depth: 1
   - _id: 13
     _name: Attack
@@ -70,9 +70,6 @@ MonoBehaviour:
   - _id: 6
     _name: CD
     _depth: 0
-  - _id: 16
-    _name: TripleBullet
-    _depth: 1
   Tags:
   - _name: Faction
     _hashCode: -168968830
@@ -134,15 +131,15 @@ MonoBehaviour:
     _shortName: Ability
     _ancestorHashCodes: 
     _ancestorNames: []
-  - _name: Ability.Die
-    _hashCode: 265453460
-    _shortName: Die
+  - _name: Ability.Equip
+    _hashCode: -583094742
+    _shortName: Equip
     _ancestorHashCodes: b84ed1e0
     _ancestorNames:
     - Ability
-  - _name: Ability.TripleBullet
-    _hashCode: -486411538
-    _shortName: TripleBullet
+  - _name: Ability.Die
+    _hashCode: 265453460
+    _shortName: Die
     _ancestorHashCodes: b84ed1e0
     _ancestorNames:
     - Ability
@@ -181,9 +178,3 @@ MonoBehaviour:
     _shortName: CD
     _ancestorHashCodes: 
     _ancestorNames: []
-  - _name: CD.TripleBullet
-    _hashCode: -160069143
-    _shortName: TripleBullet
-    _ancestorHashCodes: aba22dbc
-    _ancestorNames:
-    - CD

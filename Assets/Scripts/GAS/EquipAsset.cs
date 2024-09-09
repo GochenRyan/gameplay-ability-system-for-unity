@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackAsset : AbilityAsset
+public class EquipAsset : AbilityAsset
 {
-    public override Type AbilityType() => typeof(Attack);
+    public override Type AbilityType() => typeof(Equip);
 }

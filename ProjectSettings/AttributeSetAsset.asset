@@ -20,6 +20,3 @@ MonoBehaviour:
     - Speed
     - Attack
     - Defense
-  - Name: Bullet
-    AttributeNames:
-    - Attack

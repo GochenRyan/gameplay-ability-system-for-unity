@@ -11,9 +11,6 @@ public class AttackSpec : AbilitySpec<Attack>
 
     public override void ActivateAbility(params object[] args)
     {
-        var bullet = Object.Instantiate(Data.bulletPrefab).GetComponent<Bullet>();
-        var transform = Owner.transform;
-        bullet.Init(transform.position, transform.up, 10, Owner.AttrSet<AS_Fight>().Attack.CurrentValue);
         TryEndAbility();
     }
 

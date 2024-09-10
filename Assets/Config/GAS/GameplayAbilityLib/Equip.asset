@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: Equip
   m_EditorClassIdentifier: 
   Description: 
-  UniqueName: 
+  UniqueName: Equip
   Cost: {fileID: 0}
   Cooldown: {fileID: 0}
   CooldownTime: 0
-  AssetTags: []
+  AssetTags:
+  - _name: Ability.Equip
+    _hashCode: -583094742
+    _shortName: Equip
+    _ancestorHashCodes: b84ed1e0
+    _ancestorNames:
+    - Ability
   CancelAbilityTags: []
   BlockAbilityTags: []
   ActivationOwnedTags: []

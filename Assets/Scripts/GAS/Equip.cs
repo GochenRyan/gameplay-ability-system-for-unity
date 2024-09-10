@@ -1,15 +1,12 @@
 using GAS.Runtime;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Equip : AbstractAbility<EquipAsset>
 {
-    public EquipmentModel EquipModel {  get; set; }
+    public EquipmentActor EquipActor {  get; set; }
 
     public Equip(EquipAsset abilityAsset) : base(abilityAsset)
     {
-        EquipModel = null;
+        EquipActor = null;
     }
 
     public override AbilitySpec CreateSpec(AbilitySystemComponent owner)

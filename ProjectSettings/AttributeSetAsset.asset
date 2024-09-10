@@ -20,3 +20,9 @@ MonoBehaviour:
     - Speed
     - Attack
     - Defense
+  - Name: Equipment
+    AttributeNames:
+    - HP
+    - Speed
+    - Attack
+    - Defense

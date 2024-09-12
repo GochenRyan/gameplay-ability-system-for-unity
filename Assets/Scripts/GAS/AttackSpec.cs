@@ -11,6 +11,9 @@ public class AttackSpec : AbilitySpec<Attack>
 
     public override void ActivateAbility(params object[] args)
     {
+
+        //Owner.ApplyGameplayEffectTo()
+
         TryEndAbility();
     }
 

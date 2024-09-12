@@ -31,6 +31,8 @@
 
         public const string GAS_MMC_LIBRARY_FOLDER = "ModMagnitudeCalculationLib";
 
+        public const string GAS_EXECUTION_LIBRARY_FOLDER = "ExecutionCalculationLib";
+
         public const string GAS_ABILITY_TASK_LIBRARY_FOLDER = "AbilityTaskLib";
 
         public const string GAS_ATTRIBUTESET_CLASS_TYPE_PREFIX = "GAS.Runtime.AttributeSet.AS_";

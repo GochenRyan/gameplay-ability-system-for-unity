@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
 
     private void Attack_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        _asc.TryActivateAbility(GAbilityLib.Attack.Name);
     }
 
     private void OnDestroy()
@@ -57,7 +58,8 @@ public class Player : MonoBehaviour
     void InitAttribute()
     {
         _asc.AttrSet<AS_Fight>().InitHP(100);
-        _asc.AttrSet<AS_Fight>().InitAttack(10);
+        _asc.AttrSet<AS_Fight>().InitAttack(30);
+        _asc.AttrSet<AS_Fight>().InitDefense(10);
         _asc.AttrSet<AS_Fight>().InitSpeed(8);
 
         //_asc.AttrSet<AS_Fight>().HP.RegisterPostBaseValueChange(OnHpChange);

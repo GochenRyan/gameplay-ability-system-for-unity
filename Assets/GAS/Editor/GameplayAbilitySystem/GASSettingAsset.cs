@@ -87,6 +87,12 @@ namespace GAS.Editor
         [BoxGroup("A")]
         [DisplayAsString(TextAlignment.Left, true)]
         [LabelWidth(SHORT_LABEL_WIDTH)]
+        public static string ExecutionLibPath => $"{Setting.GASConfigAssetPath}/{GasDefine.GAS_EXECUTION_LIBRARY_FOLDER}";
+
+        [ShowInInspector]
+        [BoxGroup("A")]
+        [DisplayAsString(TextAlignment.Left, true)]
+        [LabelWidth(SHORT_LABEL_WIDTH)]
         public static string AbilityTaskLib =>
             $"{Setting.GASConfigAssetPath}/{GasDefine.GAS_ABILITY_TASK_LIBRARY_FOLDER}";
 
@@ -153,6 +159,7 @@ namespace GAS.Editor
             CheckPathFolderExist(GameplayEffectLibPath);
             CheckPathFolderExist(GameplayCueLibPath);
             CheckPathFolderExist(MMCLibPath);
+            CheckPathFolderExist(ExecutionLibPath);
             CheckPathFolderExist(AbilityTaskLib);
             AssetDatabase.Refresh();
         }

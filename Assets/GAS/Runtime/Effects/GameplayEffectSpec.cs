@@ -28,6 +28,7 @@ namespace GAS.Runtime
             DurationPolicy = GameplayEffect.DurationPolicy;
             Stacking = GameplayEffect.Stacking;
             Modifiers = GameplayEffect.Modifiers;
+            Executions = GameplayEffect.Executions;
             if (gameplayEffect.DurationPolicy != EffectsDurationPolicy.Instant)
             {
                 PeriodTicker = new GameplayEffectPeriodTicker(this);
@@ -58,6 +59,7 @@ namespace GAS.Runtime
         public EffectsDurationPolicy DurationPolicy { get; private set; }
         public GameplayEffectSpec PeriodExecution { get; private set; }
         public GameplayEffectModifier[] Modifiers { get; private set; }
+        public GameplayEffectExecution[] Executions { get; private set; }
         public GrantedAbilitySpecFromEffect[] GrantedAbilitySpec { get; private set; }
         public GameplayEffectStacking Stacking { get; private set; }
 
@@ -235,7 +237,7 @@ namespace GAS.Runtime
             Owner.GameplayEffectContainer.RemoveGameplayEffectWithAnyTags(GameplayEffect.TagContainer
                 .RemoveGameplayEffectsWithTags);
             Owner.ApplyModFromInstantGameplayEffect(this);
-            
+            Owner.ApplyExeFromInstantGameplayEffect(this);
             TriggerCueOnExecute();
         }
 

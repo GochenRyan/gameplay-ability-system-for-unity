@@ -107,9 +107,9 @@ namespace GAS.Runtime
             return Modifiers;
         }
 
-        public virtual ExecutionCalculation[] GetExecutions()
+        public virtual GameplayEffectExecution[] GetExecutions()
         {
-            return Array.Empty<ExecutionCalculation>();
+            return Array.Empty<GameplayEffectExecution>();
         }
 
         public virtual GrantedAbilityConfig[] GetGrantedAbilities()
@@ -138,7 +138,7 @@ namespace GAS.Runtime
         public GameplayCueInstant[] CueOnActivate { get; set; } = Array.Empty<GameplayCueInstant>();
         public GameplayCueInstant[] CueOnDeactivate { get; set; } = Array.Empty<GameplayCueInstant>();
         public GameplayCueDurational[] CueDurational { get; set; } = Array.Empty<GameplayCueDurational>();
-        public ExecutionCalculation[] Executions { get; set; } = Array.Empty<ExecutionCalculation>();
+        public GameplayEffectExecution[] Executions { get; set; } = Array.Empty<GameplayEffectExecution>();
         public GrantedAbilityConfig[] GrantedAbilities { get; set; } = Array.Empty<GrantedAbilityConfig>();
         public GameplayEffectStacking Stacking { get; set; } = GameplayEffectStacking.None;
 
@@ -202,7 +202,7 @@ namespace GAS.Runtime
             return CueDurational;
         }
 
-        public override ExecutionCalculation[] GetExecutions()
+        public override GameplayEffectExecution[] GetExecutions()
         {
             return Executions;
         }

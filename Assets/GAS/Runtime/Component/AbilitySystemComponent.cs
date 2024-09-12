@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Codice.Client.BaseCommands.Import.Commit;
+using static GAS.Runtime.GameplayEffectExecution;
 
 namespace GAS.Runtime
 {
@@ -321,6 +323,44 @@ namespace GAS.Runtime
 
                 AttributeSetContainer.Sets[modifier.AttributeSetName]
                     .ChangeAttributeBase(modifier.AttributeShortName, baseValue);
+            }
+        }
+
+        public void ApplyExeFromInstantGameplayEffect(GameplayEffectSpec spec)
+        {
+            foreach (var execution in spec.Executions)
+            {
+                List<OutModifier> outModifiers;
+                execution.Execute(spec, out outModifiers);
+
+                foreach (var curExecMod in outModifiers)
+                {
+                    var attributeValue = curExecMod.Attribute.Value;
+                    float baseValue = attributeValue.BaseValue;
+
+                    switch (curExecMod.Operation)
+                    {
+                        case GEOperation.Add:
+                            baseValue += curExecMod.Value;
+                            break;
+                        case GEOperation.Minus:
+                            baseValue -= curExecMod.Value;
+                            break;
+                        case GEOperation.Multiply:
+                            baseValue *= curExecMod.Value;
+                            break;
+                        case GEOperation.Divide:
+                            baseValue /= curExecMod.Value;
+                            break;
+                        case GEOperation.Override:
+                            baseValue = curExecMod.Value;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    curExecMod.Attribute.SetBaseValue(baseValue);
+                }
             }
         }
 

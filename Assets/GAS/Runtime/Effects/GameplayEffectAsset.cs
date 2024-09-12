@@ -18,6 +18,7 @@ namespace GAS.Runtime
         private const string GRP_DATA_TAG = "Data/H/Tags";
         private const string GRP_DATA_MOD = "Data/H/Modifiers";
         private const string GRP_DATA_CUE = "Data/H/Cues";
+        private const string GRP_DATA_EXE = "Data/H/Executions";
         private const string GRP_DATA_H2 = "Data/H2";
         private const string GRP_DATA_STACK = "Data/H2/Stack";
         private const string GRP_DATA_GRANTED_ABILITIES = "Data/H2/GrantedAbilities";
@@ -139,7 +140,7 @@ namespace GAS.Runtime
 
         #region Modifiers
 
-        [HorizontalGroup(GRP_DATA_H, order: 1, Width = 0.618f * 0.618f)]
+        [HorizontalGroup(GRP_DATA_H, order: 1, Width = 0.618f * 0.36f)]
         [TabGroup(GRP_DATA_MOD, "Modifiers", SdfIconType.CalculatorFill, TextColor = "#FFE60B", Order = 2)]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
         [InfoBox("依次执行多个修改器, 请注意执行顺序", InfoMessageType.Info, VisibleIf = "@$value != null && $value.Length > 1")]
@@ -225,7 +226,7 @@ namespace GAS.Runtime
 
         #region Cues
 
-        [TabGroup(GRP_DATA_CUE, "Cues", SdfIconType.Stars, TextColor = "#00FFFF", Order = 3)]
+        [TabGroup(GRP_DATA_CUE, "Cues", SdfIconType.Stars, TextColor = "#00FFFF", Order = 4)]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
         [ShowIf("IsInstantPolicy")]
         [InfoBox(ERROR_NONE_CUE, InfoMessageType.Error, VisibleIf = "IsCueExecuteNone")]
@@ -277,9 +278,15 @@ namespace GAS.Runtime
 
         #endregion Cues
 
-        // TODO
-        [HideInInspector]
-        public ExecutionCalculation[] Executions;
+        #region Executions
+        [HorizontalGroup(GRP_DATA_H, order: 1, Width = 0.618f * 0.36f)]
+        [TabGroup(GRP_DATA_EXE, "Executions", SdfIconType.Calculator, TextColor = "#FFE60B", Order = 3)]
+        [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
+        [InfoBox("依次执行多个Execution, 请注意执行顺序", InfoMessageType.Info, VisibleIf = "@$value != null && $value.Length > 1")]
+        [LabelText(@"@IsInstantPolicy() ? ""仅在成功应用时执行"":""每次激活时都会执行""")]
+        [ShowIf("@IsInstantPolicy() || IsPeriodic()")]
+        public GameplayEffectExecution[] Executions;
+        #endregion
 
         bool IsPeriodic()
         {
@@ -357,7 +364,7 @@ namespace GAS.Runtime
 
         public GameplayEffectModifier[] GetModifiers() => Modifiers;
 
-        public ExecutionCalculation[] GetExecutions() => Executions;
+        public GameplayEffectExecution[] GetExecutions() => Executions;
 
         public GrantedAbilityConfig[] GetGrantedAbilities() => GrantedAbilities;
 

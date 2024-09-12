@@ -34,7 +34,7 @@ namespace GAS.Runtime
 
         // Modifiers
         public readonly GameplayEffectModifier[] Modifiers;
-        public readonly ExecutionCalculation[] Executions; // TODO: this should be a list of execution calculations
+        public readonly GameplayEffectExecution[] Executions; // TODO: this should be a list of execution calculations
 
         // Granted Ability
         public readonly GrantedAbilityFromEffect[] GrantedAbilities;

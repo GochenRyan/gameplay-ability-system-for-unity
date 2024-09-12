@@ -18,9 +18,10 @@ namespace GAS.Editor
 {
     public class GASAssetAggregator : OdinMenuEditorWindow
     {
-        private static readonly Type[] _types = new Type[5]
+        private static readonly Type[] _types = new Type[6]
         {
             typeof(ModifierMagnitudeCalculation),
+            typeof(ExecutionCalculation),
             typeof(GameplayCue),
             typeof(GameplayEffectAsset),
             typeof(AbilityAsset),
@@ -38,16 +39,17 @@ namespace GAS.Editor
             }
         }
 
-        private static readonly DirectoryInfo[] _directoryInfos = new DirectoryInfo[5];
+        private static readonly DirectoryInfo[] _directoryInfos = new DirectoryInfo[6];
         private static readonly List<DirectoryInfo> _subDirectoryInfos = new List<DirectoryInfo>();
 
-        private static readonly string[] MenuNames = new string[5]
+        private static readonly string[] MenuNames = new string[6]
         {
-            "A- Mod Magnitude Calculation",
-            "A- Gameplay Cue",
-            "B- Gameplay Effect",
-            "C- Ability",
-            "D- Ability System Component"
+            "Mod Magnitude Calculation",
+            "Execution Calculation",
+            "Gameplay Cue",
+            "Gameplay Effect",
+            "Ability",
+            "Ability System Component"
         };
 
         private const string OpenWindow_MenuItemName = "EX-GAS/Asset Aggregator";
@@ -78,6 +80,7 @@ namespace GAS.Editor
             _libPaths = new[]
             {
                 GASSettingAsset.MMCLibPath,
+                GASSettingAsset.ExecutionLibPath,
                 GASSettingAsset.GameplayCueLibPath,
                 GASSettingAsset.GameplayEffectLibPath,
                 GASSettingAsset.GameplayAbilityLibPath,
@@ -121,7 +124,6 @@ namespace GAS.Editor
             tree.Config.AutoScrollOnSelectionChanged = true;
             tree.Config.DrawScrollView = true;
             tree.Config.AutoHandleKeyboardNavigation = true;
-            tree.SortMenuItemsByName(true);
 
             return tree;
         }
@@ -277,16 +279,19 @@ namespace GAS.Editor
             if (directoryInfo.AssetType == _types[0])
                 ScriptableObjectCreator.ShowDialog<ModifierMagnitudeCalculation>(directoryInfo.RootDirectory,
                     TrySelectMenuItemWithObject);
-            else if (directoryInfo.AssetType == _types[1])
-                ScriptableObjectCreator.ShowDialog<GameplayCue>(directoryInfo.RootDirectory,
+            if (directoryInfo.AssetType == _types[1])
+                ScriptableObjectCreator.ShowDialog<ExecutionCalculation>(directoryInfo.RootDirectory,
                     TrySelectMenuItemWithObject);
             else if (directoryInfo.AssetType == _types[2])
-                ScriptableObjectCreator.ShowDialog<GameplayEffectAsset>(directoryInfo.RootDirectory,
+                ScriptableObjectCreator.ShowDialog<GameplayCue>(directoryInfo.RootDirectory,
                     TrySelectMenuItemWithObject);
             else if (directoryInfo.AssetType == _types[3])
-                ScriptableObjectCreator.ShowDialog<AbilityAsset>(directoryInfo.RootDirectory,
+                ScriptableObjectCreator.ShowDialog<GameplayEffectAsset>(directoryInfo.RootDirectory,
                     TrySelectMenuItemWithObject);
             else if (directoryInfo.AssetType == _types[4])
+                ScriptableObjectCreator.ShowDialog<AbilityAsset>(directoryInfo.RootDirectory,
+                    TrySelectMenuItemWithObject);
+            else if (directoryInfo.AssetType == _types[5])
                 ScriptableObjectCreator.ShowDialog<AbilitySystemComponentPreset>(directoryInfo.RootDirectory,
                     TrySelectMenuItemWithObject);
         }

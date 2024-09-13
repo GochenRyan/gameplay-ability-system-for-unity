@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using GAS.Runtime;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -7,16 +6,19 @@ public class Enemy : MonoBehaviour
     private const float AttackDistance = 2.5f;
     private Player _player;
     private Rigidbody2D _rb;
+    private AbilitySystemComponent _asc;
+
+    public AbilitySystemComponent ASC { get { return _asc; } }
 
     private void Awake()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
-        //GameRunner.Instance.RegisterEnemy(this);
+        GameRunner.Instance.RegisterEnemy(this);
     }
 
     private void OnDestroy()
     {
-        //GameRunner.Instance.UnregisterEnemy(this);
+        GameRunner.Instance.UnregisterEnemy(this);
     }
 
     private void Update()
@@ -34,6 +36,24 @@ public class Enemy : MonoBehaviour
     public void Init(Player player)
     {
         _player = player;
+        _asc.InitWithPreset(1);
+        InitAttribute();
+    }
+
+    void InitAttribute()
+    {
+        _asc.AttrSet<AS_Fight>().InitHP(50);
+        _asc.AttrSet<AS_Fight>().InitAttack(20);
+        _asc.AttrSet<AS_Fight>().InitDefense(10);
+        _asc.AttrSet<AS_Fight>().InitSpeed(6);
+
+        //_asc.AttrSet<AS_Fight>().HP.RegisterPostBaseValueChange(OnHpChange);
+        _asc.AbilityContainer.AbilitySpecs()[GAbilityLib.Die.Name].RegisterEndAbility(OnDie);
+    }
+
+    private void OnDie()
+    {
+        Destroy(gameObject);
     }
 
     private bool Chase()
@@ -54,11 +74,6 @@ public class Enemy : MonoBehaviour
 
     private void Attack()
     {
-
-    }
-
-    private void Die()
-    {
-        //GameRunner.Instance.AddScore();
+        _asc.TryActivateAbility(GAbilityLib.Attack.Name);
     }
 }

@@ -31,6 +31,12 @@ MonoBehaviour:
   - _id: 10
     _name: Buff
     _depth: 1
+  - _id: 27
+    _name: DefenseUp
+    _depth: 2
+  - _id: 26
+    _name: SpeedUp
+    _depth: 2
   - _id: 14
     _name: AttackUp
     _depth: 2
@@ -46,9 +52,15 @@ MonoBehaviour:
   - _id: 2
     _name: Ability
     _depth: 0
-  - _id: 21
-    _name: Equip
+  - _id: 22
+    _name: Skill
     _depth: 1
+  - _id: 25
+    _name: Passive
+    _depth: 2
+  - _id: 24
+    _name: Active
+    _depth: 2
   - _id: 20
     _name: Die
     _depth: 1
@@ -99,6 +111,20 @@ MonoBehaviour:
     _ancestorHashCodes: 4b461665
     _ancestorNames:
     - State
+  - _name: State.Buff.DefenseUp
+    _hashCode: -1607437853
+    _shortName: DefenseUp
+    _ancestorHashCodes: 4b461665ce984a2c
+    _ancestorNames:
+    - State
+    - State.Buff
+  - _name: State.Buff.SpeedUp
+    _hashCode: -518130022
+    _shortName: SpeedUp
+    _ancestorHashCodes: 4b461665ce984a2c
+    _ancestorNames:
+    - State
+    - State.Buff
   - _name: State.Buff.AttackUp
     _hashCode: -855273027
     _shortName: AttackUp
@@ -131,12 +157,26 @@ MonoBehaviour:
     _shortName: Ability
     _ancestorHashCodes: 
     _ancestorNames: []
-  - _name: Ability.Equip
-    _hashCode: -583094742
-    _shortName: Equip
+  - _name: Ability.Skill
+    _hashCode: -1496825223
+    _shortName: Skill
     _ancestorHashCodes: b84ed1e0
     _ancestorNames:
     - Ability
+  - _name: Ability.Skill.Passive
+    _hashCode: -739114192
+    _shortName: Passive
+    _ancestorHashCodes: b84ed1e07942c8a6
+    _ancestorNames:
+    - Ability
+    - Ability.Skill
+  - _name: Ability.Skill.Active
+    _hashCode: 1265845019
+    _shortName: Active
+    _ancestorHashCodes: b84ed1e07942c8a6
+    _ancestorNames:
+    - Ability
+    - Ability.Skill
   - _name: Ability.Die
     _hashCode: 265453460
     _shortName: Die

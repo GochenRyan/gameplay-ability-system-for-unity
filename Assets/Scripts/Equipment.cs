@@ -15,4 +15,6 @@ public class Equipment : MonoBehaviour
     {
         
     }
+
+    public EquipmentActor EquipmentActor { get; set; }
 }

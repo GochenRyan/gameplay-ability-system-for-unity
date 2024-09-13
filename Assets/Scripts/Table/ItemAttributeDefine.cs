@@ -1,8 +1,6 @@
-﻿using GAS.Runtime;
-
-public class ItemAttributeDefine
+﻿public class ItemAttributeDefine
 {
-    public AttributeBase Attribute { get; set; }
-    public ModifierOp Modifier { get; set; }
-    public float Value;
+    public string AttributeName;
+    public float AttributeValue;
+    public ModifierOp Modifier;
 }

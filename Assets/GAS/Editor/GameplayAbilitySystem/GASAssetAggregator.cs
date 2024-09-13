@@ -108,7 +108,7 @@ namespace GAS.Editor
                 var libPath = LibPaths[i];
                 var type = _types[i];
                 tree.Add(menuName, _directoryInfos[i]);
-                if (menuName == MenuNames[3])
+                if (menuName == MenuNames[4])
                 {
                     tree.Add(menuName, new AbilityOverview());
                 }

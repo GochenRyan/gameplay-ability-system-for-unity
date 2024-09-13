@@ -12,7 +12,9 @@ namespace GAS.Runtime
         public static GameplayTag Ability { get; } = new GameplayTag("Ability");
         public static GameplayTag Ability_Attack { get; } = new GameplayTag("Ability.Attack");
         public static GameplayTag Ability_Die { get; } = new GameplayTag("Ability.Die");
-        public static GameplayTag Ability_Equip { get; } = new GameplayTag("Ability.Equip");
+        public static GameplayTag Ability_Skill { get; } = new GameplayTag("Ability.Skill");
+        public static GameplayTag Ability_Skill_Active { get; } = new GameplayTag("Ability.Skill.Active");
+        public static GameplayTag Ability_Skill_Passive { get; } = new GameplayTag("Ability.Skill.Passive");
         public static GameplayTag CD { get; } = new GameplayTag("CD");
         public static GameplayTag Event { get; } = new GameplayTag("Event");
         public static GameplayTag Event_Ban { get; } = new GameplayTag("Event.Ban");
@@ -24,6 +26,8 @@ namespace GAS.Runtime
         public static GameplayTag State { get; } = new GameplayTag("State");
         public static GameplayTag State_Buff { get; } = new GameplayTag("State.Buff");
         public static GameplayTag State_Buff_AttackUp { get; } = new GameplayTag("State.Buff.AttackUp");
+        public static GameplayTag State_Buff_DefenseUp { get; } = new GameplayTag("State.Buff.DefenseUp");
+        public static GameplayTag State_Buff_SpeedUp { get; } = new GameplayTag("State.Buff.SpeedUp");
         public static GameplayTag State_Debuff { get; } = new GameplayTag("State.Debuff");
         public static GameplayTag State_Debuff_Cold { get; } = new GameplayTag("State.Debuff.Cold");
         public static GameplayTag State_Debuff_Fire { get; } = new GameplayTag("State.Debuff.Fire");
@@ -33,7 +37,9 @@ namespace GAS.Runtime
             ["Ability"] = Ability,
             ["Ability.Attack"] = Ability_Attack,
             ["Ability.Die"] = Ability_Die,
-            ["Ability.Equip"] = Ability_Equip,
+            ["Ability.Skill"] = Ability_Skill,
+            ["Ability.Skill.Active"] = Ability_Skill_Active,
+            ["Ability.Skill.Passive"] = Ability_Skill_Passive,
             ["CD"] = CD,
             ["Event"] = Event,
             ["Event.Ban"] = Event_Ban,
@@ -45,6 +51,8 @@ namespace GAS.Runtime
             ["State"] = State,
             ["State.Buff"] = State_Buff,
             ["State.Buff.AttackUp"] = State_Buff_AttackUp,
+            ["State.Buff.DefenseUp"] = State_Buff_DefenseUp,
+            ["State.Buff.SpeedUp"] = State_Buff_SpeedUp,
             ["State.Debuff"] = State_Debuff,
             ["State.Debuff.Cold"] = State_Debuff_Cold,
             ["State.Debuff.Fire"] = State_Debuff_Fire,

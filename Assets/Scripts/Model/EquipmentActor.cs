@@ -1,11 +1,55 @@
 ﻿using GAS.Runtime;
+using Sirenix.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class EquipmentActor
 {
+    [NonSerialized, OdinSerialize]
+    public int TID;
+    [NonSerialized, OdinSerialize]
     public EquipmentModel EquipmentModel;
+
+    public void CreateByTID(int tID)
+    {
+        if (!DataManager.Instance.EquipmentMap.ContainsKey(tID))
+        {
+            throw new Exception($"Equipment map does not have key: {tID}");
+        }
+
+        var equipmentDefine = DataManager.Instance.EquipmentMap[tID];
+        var secondaryAttrs = new List<ItemAttributeDefine>();
+        foreach(var attr in equipmentDefine.SecondaryAttrs)
+        {
+            secondaryAttrs.Add(new ItemAttributeDefine
+            {
+                AttributeName = attr.AttributeName,
+                AttributeValue = attr.AttributeValue,
+                Modifier = attr.Modifier
+            });
+        }
+
+        List<string> dynamicEffects = new List<string>(equipmentDefine.Effects);
+        List<string> dynamicAbilities = new List<string>(equipmentDefine.Abilities);
+
+        EquipmentModel = new EquipmentModel
+        {
+            ID = GenerateID(),
+            MainAttribute = new ItemAttributeDefine
+            {
+                AttributeName = equipmentDefine.MainAttr.AttributeName,
+                AttributeValue = equipmentDefine.MainAttr.AttributeValue,
+                Modifier = equipmentDefine.MainAttr.Modifier
+            },
+            SecondaryAttributes = secondaryAttrs,
+            DynamicAbilities = dynamicAbilities,
+            DynamicEffects = dynamicEffects
+        };
+    }
+    
     public List<GameplayEffect> MakeEquipmentModelGE()
     {
         var ges = new List<GameplayEffect>();
@@ -24,10 +68,10 @@ public class EquipmentActor
 
     private GameplayEffect GetEquipAttrAddGE(ItemAttributeDefine itemAttributeDefine)
     {
-        var geData = new InfiniteGameplayEffectData(EquipmentModel.ID.ToString() + itemAttributeDefine.Attribute.Name, 0);
+        var geData = new InfiniteGameplayEffectData(EquipmentModel.ID.ToString() + itemAttributeDefine.AttributeName, 0);
 
         var attrMMC = ScriptableObject.CreateInstance<AttributeBasedModCalculation>();
-        attrMMC.attributeName = itemAttributeDefine.Attribute.Name;
+        attrMMC.attributeName = itemAttributeDefine.AttributeName;
         attrMMC.captureType = AttributeBasedModCalculation.GEAttributeCaptureType.SnapShot;
         attrMMC.attributeFromType = AttributeBasedModCalculation.AttributeFrom.Source;
         attrMMC.k = 1;
@@ -35,7 +79,7 @@ public class EquipmentActor
 
         var modifier = new GameplayEffectModifier
         {
-            AttributeName = itemAttributeDefine.Attribute.Name,
+            AttributeName = itemAttributeDefine.AttributeName,
             Operation = GEOperation.Add,
             MMC = attrMMC
         };
@@ -48,10 +92,10 @@ public class EquipmentActor
 
     private GameplayEffect GetEquipAttrMulGE(ItemAttributeDefine itemAttributeDefine)
     {
-        var geData = new InfiniteGameplayEffectData(EquipmentModel.ID.ToString() + itemAttributeDefine.Attribute.Name, 0);
+        var geData = new InfiniteGameplayEffectData(EquipmentModel.ID.ToString() + itemAttributeDefine.AttributeName, 0);
 
         var attrMMC = ScriptableObject.CreateInstance<AttributeBasedModCalculation>();
-        attrMMC.attributeName = itemAttributeDefine.Attribute.Name;
+        attrMMC.attributeName = itemAttributeDefine.AttributeName;
         attrMMC.captureType = AttributeBasedModCalculation.GEAttributeCaptureType.SnapShot;
         attrMMC.attributeFromType = AttributeBasedModCalculation.AttributeFrom.Source;
         attrMMC.k = 1;
@@ -59,7 +103,7 @@ public class EquipmentActor
 
         var modifier = new GameplayEffectModifier
         {
-            AttributeName = itemAttributeDefine.Attribute.Name,
+            AttributeName = itemAttributeDefine.AttributeName,
             Operation = GEOperation.Multiply,
             MMC = attrMMC
         };
@@ -69,4 +113,19 @@ public class EquipmentActor
 
         return ge;
     }
+
+    public static int GenerateID()
+    {
+        var IDs = AllEquipmentActor.Keys;
+        if (IDs.Count == 0 )
+        {
+            return 1;
+        }
+        else
+        {
+            return IDs.Max() + 1;
+        }
+    }
+
+    public static Dictionary<int, EquipmentActor> AllEquipmentActor = new Dictionary<int, EquipmentActor>();
 }

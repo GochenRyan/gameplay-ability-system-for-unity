@@ -1,7 +1,5 @@
 using GAS.Runtime;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Playables;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -62,8 +60,23 @@ public class Player : MonoBehaviour
         _asc.AttrSet<AS_Fight>().InitDefense(10);
         _asc.AttrSet<AS_Fight>().InitSpeed(8);
 
+        _asc.AbilityContainer.AbilitySpecs()[GAbilityLib.Attack.Name].RegisterEndAbility(OnPerformPassiveSkills);
         //_asc.AttrSet<AS_Fight>().HP.RegisterPostBaseValueChange(OnHpChange);
         //_asc.AbilityContainer.AbilitySpecs()[ability.Die.Name].RegisterEndAbility(OnDie);
+    }
+
+    private void OnPerformPassiveSkills()
+    {
+        foreach(var pair in _asc.AbilityContainer.AbilitySpecs())
+        {
+            string name = pair.Key;
+            var skill = pair.Value;
+
+            if (skill.Ability.Tag.AssetTag.Tags.Contains(GTagLib.Ability_Skill_Passive))
+            {
+                _asc.TryActivateAbility(name);
+            }
+        }
     }
 
     private void OnDie()

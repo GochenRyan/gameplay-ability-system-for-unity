@@ -13,6 +13,22 @@ MonoBehaviour:
   m_Name: DamageExpressionExecution
   m_EditorClassIdentifier: 
   Description: 
-  ExecutionParameters: []
-  Expressions: []
-  OutParameters: []
+  ExecutionParameters:
+  - AttributeFrom: 0
+    AttributeCaptureType: 0
+    AttributeName: AS_Fight.Attack
+    AttributeSetName: AS_Fight
+    AttributeShortName: Attack
+  - AttributeFrom: 1
+    AttributeCaptureType: 1
+    AttributeName: AS_Fight.Defense
+    AttributeSetName: AS_Fight
+    AttributeShortName: Defense
+  Expressions:
+  - max(In(0)-In(1),1)
+  OutParameters:
+  - AttributeFrom: 1
+    AttributeName: AS_Fight.HP
+    AttributeSetName: AS_Fight
+    AttributeShortName: HP
+    Operation: 3

@@ -5,8 +5,6 @@ using UnityEngine;
 public class GameRunner : MonoBehaviour
 {
     private bool _isRunning;
-
-    private int _score;
     public static GameRunner Instance { get; private set; }
 
     private void Awake()
@@ -39,11 +37,6 @@ public class GameRunner : MonoBehaviour
         GameplayAbilitySystem.GAS.Pause();
     }
 
-    public void AddScore(int addScore = 10)
-    {
-        _score += addScore;
-    }
-
     #region Player Management
 
     [SerializeField] private GameObject prefabPlayer;
@@ -56,7 +49,7 @@ public class GameRunner : MonoBehaviour
         var go = Instantiate(prefabPlayer);
         go.transform.position = _playerSpawnPosition;
         _player = go.GetComponent<Player>();
-        //_player.Init();
+        _player.Init();
     }
 
     private void DestroyPlayer()
@@ -73,18 +66,17 @@ public class GameRunner : MonoBehaviour
 
     [SerializeField] private float enemySpawnInterval = 1.5f;
     [SerializeField] private GameObject prefabEnemy;
-    private float _enemySpawnCounter;
     private readonly List<Enemy> _enemies = new();
     [SerializeField] private Rect enemySpawnRect;
+
+    public List<Enemy> Enemies { get; }
 
     private void Update()
     {
         if (_isRunning)
         {
-            _enemySpawnCounter += Time.deltaTime;
-            if (_enemySpawnCounter >= enemySpawnInterval)
+            if (_enemies.Count == 0)
             {
-                _enemySpawnCounter = 0;
                 SpawnEnemy();
             }
         }

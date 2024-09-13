@@ -76,11 +76,10 @@ namespace GAS.Runtime
             public AttributeFrom AttributeFrom;
             public GEAttributeCaptureType AttributeCaptureType;
 
-            [LabelText("修改属性", SdfIconType.Fingerprint)]
+            [LabelText("属性名称", SdfIconType.Fingerprint)]
             [LabelWidth(WIDTH_LABEL)]
             [OnValueChanged("OnAttributeChanged")]
             [ValueDropdown("@ValueDropdownHelper.AttributeChoices", IsUniqueList = true)]
-            [Tooltip("指的是GameplayEffect作用对象被修改的属性。")]
             [InfoBox("未选择属性", InfoMessageType.Error, VisibleIf = "@string.IsNullOrWhiteSpace($value)")]
             [SuffixLabel("@ReflectionHelper.GetAttribute($value)?.CalculateMode")]
             [PropertyOrder(1)]

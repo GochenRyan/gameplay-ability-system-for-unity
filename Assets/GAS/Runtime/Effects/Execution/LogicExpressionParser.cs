@@ -1,4 +1,4 @@
-#region License and Information
+ï»¿#region License and Information
 /*****
 * LogicExpressionParser.cs
 * 
@@ -21,7 +21,7 @@
 * 2023.04.23 - added proper culture support
 * 
 * [License]
-* Copyright (c) 2023 Markus Göbel (Bunny83)
+* Copyright (c) 2023 Markus GÃ¶bel (Bunny83)
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to
@@ -537,7 +537,7 @@ namespace B83.LogicExpressionParser
             {
                 string inner = aExpression.Substring(aIndex + 1, closing - aIndex - 1);
                 m_BracketHeap.Add(inner);
-                string sub = "$B" + (m_BracketHeap.Count - 1) + "§";
+                string sub = "$B" + (m_BracketHeap.Count - 1) + "Â§";
                 aExpression = aExpression.Substring(0, aIndex) + sub + aExpression.Substring(closing + 1);
             }
             else throw new ParseException("Bracket not closed!");
@@ -548,7 +548,7 @@ namespace B83.LogicExpressionParser
             if (closing > aIndex + 1)
             {
                 string inner = aExpression.Substring(aIndex + 1, closing - aIndex - 1).Trim();
-                string sub = "$C" + (m_Commands.Count) + "§";
+                string sub = "$C" + (m_Commands.Count) + "Â§";
                 m_Commands.Add(ParseCommand(aParser, inner));
                 aExpression = aExpression.Substring(0, aIndex) + sub + aExpression.Substring(closing + 1);
             }
@@ -583,7 +583,7 @@ namespace B83.LogicExpressionParser
         private bool ParseToken(ref string aExpression, out char aTokenType, out int aIndex)
         {
             int index2a = aExpression.IndexOf("$");
-            int index2b = aExpression.IndexOf('§');
+            int index2b = aExpression.IndexOf('Â§');
             if (index2a >= 0 && index2b >= 3)
             {
                 aTokenType = aExpression[index2a + 1];

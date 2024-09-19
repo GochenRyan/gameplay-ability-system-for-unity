@@ -1,7 +1,8 @@
 using GAS.Runtime;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IEquipable
 {
     private const float AttackDistance = 2.5f;
     private Player _player;
@@ -76,4 +77,24 @@ public class Enemy : MonoBehaviour
     {
         _asc.TryActivateAbility(GAbilityLib.Attack.Name);
     }
+
+    public void AddEquipment(EquipmentActor actor)
+    {
+        var ges = actor.MakeEquipmentModelGE();
+        foreach(var ge in ges)
+        {
+            var geSpec = _asc.ApplyGameplayEffectToSelf(ge);
+            _equipGESpecs.Add(geSpec);
+        }
+    }
+
+    public void RemoveEquipment(EquipmentActor actor)
+    {
+        foreach(var geSpec in _equipGESpecs)
+        {
+            _asc.RemoveGameplayEffect(geSpec);
+        }
+    }
+
+    private List<GameplayEffectSpec> _equipGESpecs = new List<GameplayEffectSpec>();
 }

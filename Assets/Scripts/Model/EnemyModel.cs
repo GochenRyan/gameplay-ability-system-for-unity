@@ -2,14 +2,16 @@ using System.Collections.Generic;
 
 public class EnemyModel
 {
-    public int ID { get; set; }
-    public string Name { get; set; }
-    public float MaxHP { get; set; }
-    public float HP { get; set; }
-    public float Attack { get; set; }
-    public float Defense { get; set; }
-    public float Speed { get; set; }
-    public List<string> DynamicEffects { get; set; }
-    public List<string> DynamicAbilities { get; set; }
+    public int ID;
+    public int TID;
+
+    public float MaxHP;
+    public float HP;
+    public float Attack;
+    public float Defense;
+    public float Speed;
+
+    public List<string> Effects;
+    public List<string> Abilities;
 
 }

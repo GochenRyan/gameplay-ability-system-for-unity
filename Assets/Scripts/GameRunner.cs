@@ -23,12 +23,31 @@ public class GameRunner : MonoBehaviour
 
     public void StartGame()
     {
+        EquipmentActor.Created += EquipmentActor_Created;
+        EquipmentActor.Destroy += EquipmentActor_Destroy;
 
         GameplayAbilitySystem.GAS.Unpause();
         DestroyPlayer();
         DestroyEnemies();
         CreatePlayer();
         _isRunning = true;
+    }
+
+    private void EquipmentActor_Destroy(EquipmentActor actor)
+    {
+        Destroy(_equipment.gameObject);
+        _equipment = null;
+    }
+
+    private void EquipmentActor_Created(EquipmentActor actor)
+    {
+        if (_equipment != null)
+            return;
+
+        var go = Instantiate(prefabEquipment);
+        go.transform.position = _equipmentSpawnPosition;
+        _equipment = go.GetComponent<Equipment>();
+        _equipment.EquipmentActor = actor;
     }
 
     public void GameOver()
@@ -42,6 +61,10 @@ public class GameRunner : MonoBehaviour
     [SerializeField] private GameObject prefabPlayer;
     [SerializeField] private Vector3 _playerSpawnPosition = Vector3.zero;
     private Player _player;
+
+    [SerializeField] private GameObject prefabEquipment;
+    [SerializeField] private Vector3 _equipmentSpawnPosition = Vector3.zero;
+    private Equipment _equipment;
 
     private void CreatePlayer()
     {
@@ -63,8 +86,7 @@ public class GameRunner : MonoBehaviour
 
 
     #region Enemy Managment
-
-    [SerializeField] private float enemySpawnInterval = 1.5f;
+    
     [SerializeField] private GameObject prefabEnemy;
     private readonly List<Enemy> _enemies = new();
     [SerializeField] private Rect enemySpawnRect;

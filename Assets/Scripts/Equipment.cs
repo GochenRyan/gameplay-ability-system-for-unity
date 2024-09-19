@@ -16,5 +16,14 @@ public class Equipment : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (EquipmentActor != null)
+        {
+            var go = collision.gameObject;
+
+        }
+    }
+
     public EquipmentActor EquipmentActor { get; set; }
 }

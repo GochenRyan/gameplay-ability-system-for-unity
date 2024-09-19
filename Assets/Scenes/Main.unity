@@ -473,7 +473,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPlayer: {fileID: 4722982424253556824, guid: 486fe4d534ebba940a3d5cf861126bac, type: 3}
   _playerSpawnPosition: {x: 0, y: 0, z: 0}
-  enemySpawnInterval: 1.5
+  prefabEquipment: {fileID: 5680360641727613257, guid: aa11d79943bab78438c1371dee65da3b, type: 3}
+  _equipmentSpawnPosition: {x: 0, y: 0, z: 0}
   prefabEnemy: {fileID: 2846359029476412131, guid: c893cacc0a0d22d40a10884ba194949c, type: 3}
   enemySpawnRect:
     serializedVersion: 2

@@ -1,8 +1,9 @@
 using GAS.Runtime;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IEquipable
 {
     private Rigidbody2D _rb;
     private PlayerInput _input;
@@ -100,4 +101,24 @@ public class Player : MonoBehaviour
     {
         _rb.velocity = Vector2.zero;
     }
+
+    public void AddEquipment(EquipmentActor actor)
+    {
+        var ges = actor.MakeEquipmentModelGE();
+        foreach (var ge in ges)
+        {
+            var geSpec = _asc.ApplyGameplayEffectToSelf(ge);
+            _equipGESpecs.Add(geSpec);
+        }
+    }
+
+    public void RemoveEquipment(EquipmentActor actor)
+    {
+        foreach (var geSpec in _equipGESpecs)
+        {
+            _asc.RemoveGameplayEffect(geSpec);
+        }
+    }
+
+    private List<GameplayEffectSpec> _equipGESpecs = new List<GameplayEffectSpec>();
 }

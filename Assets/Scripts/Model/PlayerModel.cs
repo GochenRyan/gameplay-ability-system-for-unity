@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 public class PlayerModel
 {
+    public int ID;
+    public int TID;
+
     public float MaxHP;
     public float HP;
     public float Attack;

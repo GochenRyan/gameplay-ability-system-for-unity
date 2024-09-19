@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Buff_AttackUp
   m_EditorClassIdentifier: 
   Description: 
-  DurationPolicy: 1
+  DurationPolicy: 2
   Duration: 0
   Period: 0
   PeriodExecution: {fileID: 0}
@@ -28,7 +28,13 @@ MonoBehaviour:
     clearStackOnOverflow: 0
     overflowEffects: []
   GrantedAbilities: []
-  Modifiers: []
+  Modifiers:
+  - AttributeName: AS_Fight.HP
+    AttributeSetName: AS_Fight
+    AttributeShortName: HP
+    ModiferMagnitude: 0
+    Operation: 0
+    MMC: {fileID: 11400000, guid: 8738a25298a8609428f668cb49df6d6a, type: 2}
   AssetTags: []
   GrantedTags: []
   ApplicationRequiredTags: []

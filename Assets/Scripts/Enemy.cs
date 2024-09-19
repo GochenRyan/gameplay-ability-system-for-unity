@@ -48,10 +48,10 @@ public class Enemy : MonoBehaviour, IEquipable
 
     void InitAttribute(EnemyActor actor)
     {
-        _asc.AttrSet<AS_Fight>().HP.RegisterPostBaseValueChange(OnHpChange);
-        _asc.AttrSet<AS_Fight>().Attack.RegisterPostBaseValueChange(OnAttackChange);
-        _asc.AttrSet<AS_Fight>().Defense.RegisterPostBaseValueChange(OnDefenseChange);
-        _asc.AttrSet<AS_Fight>().Speed.RegisterPostBaseValueChange(OnSpeedChange);
+        _asc.AttrSet<AS_Fight>().HP.RegisterPostCurrentValueChange(OnHpChange);
+        _asc.AttrSet<AS_Fight>().Attack.RegisterPostCurrentValueChange(OnAttackChange);
+        _asc.AttrSet<AS_Fight>().Defense.RegisterPostCurrentValueChange(OnDefenseChange);
+        _asc.AttrSet<AS_Fight>().Speed.RegisterPostCurrentValueChange(OnSpeedChange);
 
         _asc.AttrSet<AS_Fight>().InitMaxHP(actor.EnemyModel.HP);
         _asc.AttrSet<AS_Fight>().InitHP(actor.EnemyModel.HP);

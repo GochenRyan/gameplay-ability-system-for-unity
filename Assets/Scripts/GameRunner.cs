@@ -106,6 +106,11 @@ public class GameRunner : MonoBehaviour
     [SerializeField] private Vector3 _playerSpawnPosition = Vector3.zero;
     private Player _player;
 
+    public Player Player
+    {
+        get { return _player; }
+    }
+
     [SerializeField] private GameObject prefabEquipment;
     [SerializeField] private Vector3 _equipmentSpawnPosition = Vector3.zero;
     private Equipment _equipment;

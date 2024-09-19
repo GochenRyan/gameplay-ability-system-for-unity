@@ -10,6 +10,8 @@ public class Player : MonoBehaviour, IEquipable
     private AbilitySystemComponent _asc;
     private PlayerActor _actor;
 
+    public AbilitySystemComponent ASC { get { return _asc; } }
+
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -59,10 +61,10 @@ public class Player : MonoBehaviour, IEquipable
 
     void InitAttribute(PlayerActor actor)
     {
-        _asc.AttrSet<AS_Fight>().HP.RegisterPostBaseValueChange(OnHpChange);
-        _asc.AttrSet<AS_Fight>().Attack.RegisterPostBaseValueChange(OnAttackChange);
-        _asc.AttrSet<AS_Fight>().Defense.RegisterPostBaseValueChange(OnDefenseChange);
-        _asc.AttrSet<AS_Fight>().Speed.RegisterPostBaseValueChange(OnSpeedChange);
+        _asc.AttrSet<AS_Fight>().HP.RegisterPostCurrentValueChange(OnHpChange);
+        _asc.AttrSet<AS_Fight>().Attack.RegisterPostCurrentValueChange(OnAttackChange);
+        _asc.AttrSet<AS_Fight>().Defense.RegisterPostCurrentValueChange(OnDefenseChange);
+        _asc.AttrSet<AS_Fight>().Speed.RegisterPostCurrentValueChange(OnSpeedChange);
 
         _asc.AttrSet<AS_Fight>().InitMaxHP(actor.PlayerModel.HP);
         _asc.AttrSet<AS_Fight>().InitHP(actor.PlayerModel.HP);

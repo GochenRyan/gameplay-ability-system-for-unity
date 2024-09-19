@@ -18,5 +18,5 @@ MonoBehaviour:
   attributeName: AS_Fight.Attack
   attributeSetName: AS_Fight
   attributeShortName: Attack
-  k: 1.2
+  k: 0.2
   b: 0

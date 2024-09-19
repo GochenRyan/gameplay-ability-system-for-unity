@@ -15,11 +15,24 @@ public class AttackSpec : AbilitySpec<Attack>
     {
         if (_effectAsset != null)
         {
-            if (GameRunner.Instance.Enemies.Count > 0)
+
+            if (Owner.GameplayTagAggregator.HasAnyTags(GTagLib.Faction_Player))
             {
-                var enemy = GameRunner.Instance.Enemies[0];
-                var gameplayEffect = new GameplayEffect(_effectAsset);
-                Owner.ApplyGameplayEffectTo(gameplayEffect, enemy.ASC);
+                if (GameRunner.Instance.Enemies.Count > 0)
+                {
+                    var enemy = GameRunner.Instance.Enemies[0];
+                    var gameplayEffect = new GameplayEffect(_effectAsset);
+                    Owner.ApplyGameplayEffectTo(gameplayEffect, enemy.ASC);
+                }
+            }
+            else
+            {
+                var player = GameRunner.Instance.Player;
+                if (player != null)
+                {
+                    var gameplayEffect = new GameplayEffect(_effectAsset);
+                    Owner.ApplyGameplayEffectTo(gameplayEffect, player.ASC);
+                }
             }
             TryEndAbility();
         }

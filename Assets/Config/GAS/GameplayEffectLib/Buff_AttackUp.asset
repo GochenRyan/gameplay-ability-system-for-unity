@@ -19,8 +19,8 @@ MonoBehaviour:
   PeriodExecution: {fileID: 0}
   Stacking:
     stackingType: 0
-    stackingCodeName: 
-    limitCount: 0
+    stackingCodeName: Buff_AttackUp
+    limitCount: 1
     durationRefreshPolicy: 0
     periodResetPolicy: 0
     expirationPolicy: 0
@@ -29,9 +29,9 @@ MonoBehaviour:
     overflowEffects: []
   GrantedAbilities: []
   Modifiers:
-  - AttributeName: AS_Fight.HP
+  - AttributeName: AS_Fight.Attack
     AttributeSetName: AS_Fight
-    AttributeShortName: HP
+    AttributeShortName: Attack
     ModiferMagnitude: 0
     Operation: 0
     MMC: {fileID: 11400000, guid: 8738a25298a8609428f668cb49df6d6a, type: 2}

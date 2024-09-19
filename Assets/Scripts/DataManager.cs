@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class DataManager
 {
@@ -32,8 +31,8 @@ public class DataManager
             Attack = 30,
             Defense = 10,
             Speed = 10,
-            Abilities = {},
-            Effects = { "State.Buff.AttackUp" }
+            Abilities = new List<string>{ "Attack" },
+            Effects = new List<string>{ "Buff_AttackUp" }
         });
 
         PlayerMap.Add(10001, new PlayerDefine
@@ -43,8 +42,8 @@ public class DataManager
             Attack = 30,
             Defense = 15,
             Speed = 20,
-            Abilities = {"Attack"},
-            Effects = { "State.Buff.AttackUp" }
+            Abilities = new List<string>{ "Attack"},
+            Effects = new List<string>{ "Buff_AttackUp" }
         });
 
         EquipmentMap.Add(10001, new EquipmentDefine
@@ -65,8 +64,8 @@ public class DataManager
                     Modifier = ModifierOp.Multiply
                 }
             },
-            Abilities = {},
-            Effects = { "State.Buff.AttackUp" }
+            Abilities = new List<string>(),
+            Effects = new List<string>{ "Buff_AttackUp" }
         });
     }
 

@@ -37,6 +37,13 @@ MonoBehaviour:
     _ancestorHashCodes: b84ed1e0
     _ancestorNames:
     - Ability
+  - _name: Ability.Skill.Active
+    _hashCode: 1265845019
+    _shortName: Active
+    _ancestorHashCodes: b84ed1e07942c8a6
+    _ancestorNames:
+    - Ability
+    - Ability.Skill
   BlockAbilityTags: []
   ActivationOwnedTags:
   - _name: Event.Ban.Move

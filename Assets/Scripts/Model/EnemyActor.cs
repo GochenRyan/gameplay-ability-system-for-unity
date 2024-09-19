@@ -1,13 +1,13 @@
+using GAS.Runtime;
 using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.AddressableAssets;
 
 [Serializable]
 public class EnemyActor
 {
-    [NonSerialized, OdinSerialize]
-    public int TID;
     [NonSerialized, OdinSerialize]
     public EnemyModel EnemyModel;
 
@@ -16,12 +16,12 @@ public class EnemyActor
 
     public void CreateByTID(int tID)
     {
-        if (DataManager.Instance.EnemyMap.ContainsKey(TID))
+        if (!DataManager.Instance.EnemyMap.ContainsKey(tID))
         {
             throw new Exception($"Enemy map does not have key: {tID}");
         }
 
-        var enemyDefine = DataManager.Instance.EnemyMap[TID];
+        var enemyDefine = DataManager.Instance.EnemyMap[tID];
 
         List<string> dynamicEffects = new List<string>(enemyDefine.Effects);
         List<string> dynamicAbilities = new List<string>(enemyDefine.Abilities);
@@ -40,6 +40,38 @@ public class EnemyActor
         };
         AllEnemyActor.Add(EnemyModel.ID, this);
         Created?.Invoke(this);
+    }
+
+    public void DestoryActor()
+    {
+        AllEnemyActor.Remove(EnemyModel.ID);
+        Destroy?.Invoke(this);
+    }
+
+    public List<GameplayEffect> MakePlayerModelGE()
+    {
+        var ges = new List<GameplayEffect>();
+        foreach (var geName in EnemyModel.Effects)
+        {
+            var op = Addressables.LoadAssetAsync<GameplayEffectAsset>(geName);
+            var asset = op.WaitForCompletion();
+            var ge = new GameplayEffect(asset);
+            ges.Add(ge);
+        }
+        return ges;
+    }
+
+    public List<AbstractAbility> MakeAbilities()
+    {
+        var abilities = new List<AbstractAbility>();
+        foreach (var abilityName in EnemyModel.Abilities)
+        {
+            var op = Addressables.LoadAssetAsync<AbilityAsset>(abilityName);
+            var asset = op.WaitForCompletion();
+            var ability = Activator.CreateInstance(asset.AbilityType(), args: asset) as AbstractAbility;
+            abilities.Add(ability);
+        }
+        return abilities;
     }
 
     public static int GenerateID()

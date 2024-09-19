@@ -9,8 +9,6 @@ using UnityEngine;
 public class EquipmentActor
 {
     [NonSerialized, OdinSerialize]
-    public int TID;
-    [NonSerialized, OdinSerialize]
     public EquipmentModel EquipmentModel;
 
     public static event Action<EquipmentActor> Created;

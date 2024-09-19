@@ -29,7 +29,8 @@ public class UIManager : MonoBehaviour
 
     private void OnClickStart()
     {
-
+        m_startBtn.gameObject.SetActive(false);
+        GameRunner.Instance.StartGame();
     }
 
     public void SetPlayerHp(int hpValue)

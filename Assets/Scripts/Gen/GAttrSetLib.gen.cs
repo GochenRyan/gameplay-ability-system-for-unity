@@ -338,6 +338,46 @@ namespace GAS.Runtime
 
         #endregion HP
 
+        #region MaxHP
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public AttributeBase MaxHP { get; } = new ("AS_Fight", "MaxHP", 0f, CalculateMode.Stacking, (SupportedOperation)31, float.MinValue, float.MaxValue);
+
+        public void InitMaxHP(float value)
+        {
+            MaxHP.SetBaseValue(value);
+            MaxHP.SetCurrentValue(value);
+        }
+
+        public void SetCurrentMaxHP(float value)
+        {
+            MaxHP.SetCurrentValue(value);
+        }
+
+        public void SetBaseMaxHP(float value)
+        {
+            MaxHP.SetBaseValue(value);
+        }
+
+        public void SetMinMaxHP(float value)
+        {
+            MaxHP.SetMinValue(value);
+        }
+
+        public void SetMaxMaxHP(float value)
+        {
+            MaxHP.SetMaxValue(value);
+        }
+
+        public void SetMinMaxMaxHP(float min, float max)
+        {
+            MaxHP.SetMinMaxValue(min, max);
+        }
+
+        #endregion MaxHP
+
         #region Speed
 
         /// <summary>
@@ -392,6 +432,8 @@ namespace GAS.Runtime
                         return Attack;
                     case "Defense":
                         return Defense;
+                    case "MaxHP":
+                        return MaxHP;
                 }
 
                 return null;
@@ -404,6 +446,7 @@ namespace GAS.Runtime
             "Speed",
             "Attack",
             "Defense",
+            "MaxHP",
         };
 
         public override void SetOwner(AbilitySystemComponent owner)
@@ -413,6 +456,7 @@ namespace GAS.Runtime
             Speed.SetOwner(owner);
             Attack.SetOwner(owner);
             Defense.SetOwner(owner);
+            MaxHP.SetOwner(owner);
         }
 
         public static class Lookup
@@ -421,6 +465,7 @@ namespace GAS.Runtime
             public const string Speed = "AS_Fight.Speed";
             public const string Attack = "AS_Fight.Attack";
             public const string Defense = "AS_Fight.Defense";
+            public const string MaxHP = "AS_Fight.MaxHP";
         }
     }
 
@@ -444,6 +489,7 @@ namespace GAS.Runtime
             "AS_Fight.Speed",
             "AS_Fight.Attack",
             "AS_Fight.Defense",
+            "AS_Fight.MaxHP",
             "AS_Equipment.HP",
             "AS_Equipment.Speed",
             "AS_Equipment.Attack",

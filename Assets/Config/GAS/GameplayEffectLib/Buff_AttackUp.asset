@@ -35,7 +35,14 @@ MonoBehaviour:
     ModiferMagnitude: 0
     Operation: 0
     MMC: {fileID: 11400000, guid: 8738a25298a8609428f668cb49df6d6a, type: 2}
-  AssetTags: []
+  AssetTags:
+  - _name: State.Buff.AttackUp
+    _hashCode: -855273027
+    _shortName: AttackUp
+    _ancestorHashCodes: 4b461665ce984a2c
+    _ancestorNames:
+    - State
+    - State.Buff
   GrantedTags: []
   ApplicationRequiredTags: []
   OngoingRequiredTags: []

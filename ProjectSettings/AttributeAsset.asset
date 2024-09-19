@@ -49,3 +49,12 @@ MonoBehaviour:
     MinValue: -3.4028235e+38
     LimitMaxValue: 0
     MaxValue: 3.4028235e+38
+  - Name: MaxHP
+    Comment: 
+    CalculateMode: 0
+    SupportedOperation: 31
+    DefaultValue: 0
+    LimitMinValue: 0
+    MinValue: -3.4028235e+38
+    LimitMaxValue: 0
+    MaxValue: 3.4028235e+38

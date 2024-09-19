@@ -19,6 +19,7 @@ public class GameRunner : MonoBehaviour
 
     private void WaitForFirstGameStart()
     {
+        var dataMnager = DataManager.Instance;
     }
 
     public void StartGame()
@@ -26,11 +27,54 @@ public class GameRunner : MonoBehaviour
         EquipmentActor.Created += EquipmentActor_Created;
         EquipmentActor.Destroy += EquipmentActor_Destroy;
 
+        PlayerActor.Created += PlayerActor_Created;
+        PlayerActor.Destroy += PlayerActor_Destroy;
+
+        EnemyActor.Created += EnemyActor_Created;
+        EnemyActor.Destroy += EnemyActor_Destroy;
+
         GameplayAbilitySystem.GAS.Unpause();
         DestroyPlayer();
         DestroyEnemies();
         CreatePlayer();
         _isRunning = true;
+    }
+
+    private void EnemyActor_Destroy(EnemyActor actor)
+    {
+        foreach (var enemy in Enemies)
+        {
+            if (enemy.Actor == actor)
+            {
+                Destroy(enemy.gameObject);
+                break;
+            }
+        }
+    }
+
+    private void EnemyActor_Created(EnemyActor actor)
+    {
+        var position = new Vector3(
+            Random.Range(enemySpawnRect.xMin, enemySpawnRect.xMax),
+            Random.Range(enemySpawnRect.yMin, enemySpawnRect.yMax),
+            0);
+        var go = Instantiate(prefabEnemy);
+        go.transform.position = position;
+        var enemy = go.GetComponent<Enemy>();
+        enemy.Init(actor, _player);
+    }
+
+    private void PlayerActor_Destroy(PlayerActor actor)
+    {
+        Destroy(_player.gameObject);
+    }
+
+    private void PlayerActor_Created(PlayerActor actor)
+    {
+        var go = Instantiate(prefabPlayer);
+        go.transform.position = _playerSpawnPosition;
+        _player = go.GetComponent<Player>();
+        _player.Init(actor);
     }
 
     private void EquipmentActor_Destroy(EquipmentActor actor)
@@ -69,10 +113,8 @@ public class GameRunner : MonoBehaviour
     private void CreatePlayer()
     {
         if (_player != null) return;
-        var go = Instantiate(prefabPlayer);
-        go.transform.position = _playerSpawnPosition;
-        _player = go.GetComponent<Player>();
-        _player.Init();
+        var actor = new PlayerActor();
+        actor.CreateByTID(10001);
     }
 
     private void DestroyPlayer()
@@ -91,7 +133,13 @@ public class GameRunner : MonoBehaviour
     private readonly List<Enemy> _enemies = new();
     [SerializeField] private Rect enemySpawnRect;
 
-    public List<Enemy> Enemies { get; }
+    public List<Enemy> Enemies
+    {
+        get
+        {
+            return _enemies;
+        }
+    }
 
     private void Update()
     {
@@ -116,14 +164,8 @@ public class GameRunner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        var position = new Vector3(
-            Random.Range(enemySpawnRect.xMin, enemySpawnRect.xMax),
-            Random.Range(enemySpawnRect.yMin, enemySpawnRect.yMax),
-            0);
-        var go = Instantiate(prefabEnemy);
-        go.transform.position = position;
-        var enemy = go.GetComponent<Enemy>();
-        enemy.Init(_player);
+        var actor = new EnemyActor();
+        actor.CreateByTID(10001);
     }
 
     private void DestroyEnemies()

@@ -29,6 +29,11 @@ namespace GAS.Runtime
         /// </summary>
         public const string Defense = "Defense";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string MaxHP = "MaxHP";
+
         // For facilitating the creation of a Value Dropdown in the editor.
         public static List<string> AttributeNames = new List<string>()
         {
@@ -36,6 +41,7 @@ namespace GAS.Runtime
             "Speed",
             "Attack",
             "Defense",
+            "MaxHP",
         };
     }
 }

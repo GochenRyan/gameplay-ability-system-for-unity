@@ -20,6 +20,7 @@ MonoBehaviour:
     - Speed
     - Attack
     - Defense
+    - MaxHP
   - Name: Equipment
     AttributeNames:
     - HP

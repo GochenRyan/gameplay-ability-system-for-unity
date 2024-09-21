@@ -11,9 +11,6 @@ public class PlayerActor
     [NonSerialized, OdinSerialize]
     public PlayerModel PlayerModel;
 
-    public static event Action<PlayerActor> Created;
-    public static event Action<PlayerActor> Destroy;
-
     public void CreateByTID(int tID)
     {
         if (!DataManager.Instance.PlayerMap.ContainsKey(tID))
@@ -38,14 +35,7 @@ public class PlayerActor
             Abilities = dynamicAbilities,
             Effects = dynamicEffects
         };
-        AllPlayerActor.Add(PlayerModel.ID, this);
-        Created?.Invoke(this);
-    }
-
-    public void DestoryActor()
-    {
-        AllPlayerActor.Remove(PlayerModel.ID);
-        Destroy?.Invoke(this);
+        GameActor.Instance.AddPlayer(this);
     }
 
     public List<GameplayEffect> MakePlayerModelGE()
@@ -76,7 +66,7 @@ public class PlayerActor
 
     public static int GenerateID()
     {
-        var IDs = AllPlayerActor.Keys;
+        var IDs = GameActor.Instance.AllPlayerActor.Keys;
         if (IDs.Count == 0)
         {
             return 1;
@@ -86,7 +76,4 @@ public class PlayerActor
             return IDs.Max() + 1;
         }
     }
-
-    [NonSerialized, OdinSerialize]
-    public static Dictionary<int, PlayerActor> AllPlayerActor = new Dictionary<int, PlayerActor>();
 }

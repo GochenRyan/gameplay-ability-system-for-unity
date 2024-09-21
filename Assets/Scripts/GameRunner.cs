@@ -7,9 +7,25 @@ public class GameRunner : MonoBehaviour
     private bool _isRunning;
     public static GameRunner Instance { get; private set; }
 
+    private PlayerInput _input;
+
     private void Awake()
     {
         Instance = this;
+        _input = new PlayerInput();
+        _input.Enable();
+        _input.Game.Save.performed += Save_performed;
+        _input.Game.Load.performed += Load_performed;
+    }
+
+    private void Load_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        
+    }
+
+    private void Save_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        
     }
 
     private void Start()
@@ -24,14 +40,14 @@ public class GameRunner : MonoBehaviour
 
     public void StartGame()
     {
-        EquipmentActor.Created += EquipmentActor_Created;
-        EquipmentActor.Destroy += EquipmentActor_Destroy;
+        GameActor.Instance.EquipmentCreated += EquipmentActor_Created;
+        GameActor.Instance.EquipmentDestroy += EquipmentActor_Destroy;
 
-        PlayerActor.Created += PlayerActor_Created;
-        PlayerActor.Destroy += PlayerActor_Destroy;
+        GameActor.Instance.PlayerCreated += PlayerActor_Created;
+        GameActor.Instance.PlayerDestroy += PlayerActor_Destroy;
 
-        EnemyActor.Created += EnemyActor_Created;
-        EnemyActor.Destroy += EnemyActor_Destroy;
+        GameActor.Instance.EnemyCreated += EnemyActor_Created;
+        GameActor.Instance.EnemyDestroy += EnemyActor_Destroy;
 
         GameplayAbilitySystem.GAS.Unpause();
         DestroyPlayer();

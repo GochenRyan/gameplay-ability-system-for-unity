@@ -138,7 +138,7 @@ public class Player : MonoBehaviour, IEquipable
     private void OnDie()
     {
         GameRunner.Instance.GameOver();
-        _actor.DestoryActor();
+        GameActor.Instance.DestroyPlayer(_actor);
     }
 
 

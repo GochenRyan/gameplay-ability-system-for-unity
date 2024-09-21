@@ -109,7 +109,7 @@ public class Enemy : MonoBehaviour, IEquipable
 
     private void OnDie()
     {
-        _enemyActor.DestoryActor();
+        GameActor.Instance.DestoryEnemy(_enemyActor);
     }
 
     private bool Chase()

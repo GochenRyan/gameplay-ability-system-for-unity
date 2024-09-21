@@ -11,9 +11,6 @@ public class EquipmentActor
     [NonSerialized, OdinSerialize]
     public EquipmentModel EquipmentModel;
 
-    public static event Action<EquipmentActor> Created;
-    public static event Action<EquipmentActor> Destroy;
-
     public void CreateByTID(int tID)
     {
         if (!DataManager.Instance.EquipmentMap.ContainsKey(tID))
@@ -49,14 +46,7 @@ public class EquipmentActor
             DynamicAbilities = dynamicAbilities,
             DynamicEffects = dynamicEffects
         };
-        AllEquipmentActor.Add(EquipmentModel.ID, this);
-        Created?.Invoke(this);
-    }
-
-    public void DestroyActor()
-    {
-        AllEquipmentActor.Remove(EquipmentModel.ID);
-        Destroy?.Invoke(this);
+        GameActor.Instance.AddEquipment(this);
     }
     
     public List<GameplayEffect> MakeEquipmentModelGE()
@@ -125,7 +115,7 @@ public class EquipmentActor
 
     public static int GenerateID()
     {
-        var IDs = AllEquipmentActor.Keys;
+        var IDs = GameActor.Instance.AllEquipmentActor.Keys;
         if (IDs.Count == 0 )
         {
             return 1;
@@ -135,7 +125,4 @@ public class EquipmentActor
             return IDs.Max() + 1;
         }
     }
-
-    [NonSerialized, OdinSerialize]
-    public static Dictionary<int, EquipmentActor> AllEquipmentActor = new Dictionary<int, EquipmentActor>();
 }

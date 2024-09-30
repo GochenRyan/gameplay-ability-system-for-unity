@@ -3,6 +3,7 @@ using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 [Serializable]
@@ -22,6 +23,9 @@ public class EnemyActor
 
         List<string> dynamicEffects = new List<string>(enemyDefine.Effects);
         List<string> dynamicAbilities = new List<string>(enemyDefine.Abilities);
+        var position = new Vector2(
+            UnityEngine.Random.Range(-8f, 8f),
+            UnityEngine.Random.Range(-4f, 4f));
 
         EnemyModel = new EnemyModel
         {
@@ -33,8 +37,11 @@ public class EnemyActor
             Defense = enemyDefine.Defense,
             Speed = enemyDefine.Speed,
             Abilities = dynamicAbilities,
-            Effects = dynamicEffects
+            Effects = dynamicEffects,
+            Position = position
         };
+        
+
         GameActor.Instance.AddEnemy(this);
     }
 

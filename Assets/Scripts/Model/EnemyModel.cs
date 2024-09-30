@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyModel
 {
@@ -10,6 +11,8 @@ public class EnemyModel
     public float Attack;
     public float Defense;
     public float Speed;
+
+    public Vector2 Position;
 
     public List<string> Effects;
     public List<string> Abilities;

@@ -50,6 +50,8 @@ public class Player : MonoBehaviour, IEquipable
         dir.z = 0;
         dir = dir.normalized;
         transform.up = dir;
+
+        _actor.PlayerModel.Position = transform.position;
     }
 
     public void Init(PlayerActor actor)
@@ -159,6 +161,14 @@ public class Player : MonoBehaviour, IEquipable
 
     public void AddEquipment(EquipmentActor actor)
     {
+        if (_equipGESpecs.Count > 0)
+        {
+            foreach (var spec in _equipGESpecs)
+            {
+                _asc.RemoveGameplayEffectSpec(spec);
+            }
+        }
+
         var ges = actor.MakeEquipmentModelGE();
         foreach (var ge in ges)
         {

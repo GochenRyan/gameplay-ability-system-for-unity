@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EquipmentModel
 {
@@ -8,4 +9,6 @@ public class EquipmentModel
     public List<ItemAttributeDefine> SecondaryAttributes;
     public List<string> DynamicEffects;
     public List<string> DynamicAbilities;
+
+    public Vector2 Position;
 }

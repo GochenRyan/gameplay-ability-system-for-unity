@@ -38,7 +38,7 @@ public class DataManager
         PlayerMap.Add(10001, new PlayerDefine
         {
             TID = 10001,
-            HP = 100,
+            HP = 1000,
             Attack = 30,
             Defense = 15,
             Speed = 20,
@@ -51,7 +51,7 @@ public class DataManager
             TID = 10001,
             MainAttr = new ItemAttributeDefine
             {
-                AttributeName = "Attack",
+                AttributeName = "AS_Fight.Attack",
                 AttributeValue = 5,
                 Modifier = ModifierOp.Additive
             },
@@ -59,8 +59,8 @@ public class DataManager
             {
                 new ItemAttributeDefine
                 {
-                    AttributeName = "Defense",
-                    AttributeValue = 1.1f,
+                    AttributeName = "AS_Fight.Defense",
+                    AttributeValue = 0.1f,
                     Modifier = ModifierOp.Multiply
                 }
             },

@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour, IEquipable
             var dir = (Vector2)(_player.transform.position - transform.position);
             dir.Normalize();
             transform.up = dir;
+            _attackTimer += Time.deltaTime;
         }
     }
 
@@ -114,6 +115,7 @@ public class Enemy : MonoBehaviour, IEquipable
 
     private bool Chase()
     {
+        _enemyActor.EnemyModel.Position = this.transform.position;
         if (_player == null)
         {
             _rb.velocity = Vector2.zero;
@@ -138,6 +140,9 @@ public class Enemy : MonoBehaviour, IEquipable
 
     private void Attack()
     {
+        if (_attackTimer < 1)
+            return;
+        _attackTimer = 0;
         _asc.TryActivateAbility(_activeAbility);
     }
 
@@ -163,4 +168,5 @@ public class Enemy : MonoBehaviour, IEquipable
     private List<GameplayEffectSpec> _equipGESpecs = new List<GameplayEffectSpec>();
     private string _activeAbility;
     private List<string> _passiveAbilities = new List<string>();
+    private float _attackTimer = 0f;
 }

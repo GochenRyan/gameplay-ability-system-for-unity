@@ -18,6 +18,48 @@ public class GameActor
 
     }
 
+    public void Load(GameActor actor)
+    {
+        this.AllPlayerActor = actor.AllPlayerActor;
+        foreach(var pair in AllPlayerActor)
+        {
+            PlayerCreated?.Invoke(pair.Value);
+        }
+
+        this.AllEnemyActor = actor.AllEnemyActor;
+        foreach (var pair in AllEnemyActor)
+        {
+            EnemyCreated?.Invoke(pair.Value);
+        }
+
+        this.AllEquipmentActor = actor.AllEquipmentActor;
+        foreach (var pair in AllEquipmentActor)
+        {
+            EquipmentCreated?.Invoke(pair.Value);
+        }
+    }
+
+    public void DestroyAll()
+    {
+        foreach (var pair in AllPlayerActor)
+        {
+            PlayerDestroy?.Invoke(pair.Value);
+        }
+        AllPlayerActor.Clear();
+
+        foreach (var pair in AllEnemyActor)
+        {
+            EnemyDestroy?.Invoke(pair.Value);
+        }
+        AllEnemyActor.Clear();
+
+        foreach (var pair in AllEquipmentActor)
+        {
+            EquipmentDestroy?.Invoke(pair.Value);
+        }
+        AllEquipmentActor.Clear();
+    }
+
     static GameActor instance;
 
     private GameActor()

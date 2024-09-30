@@ -22,6 +22,12 @@ public class Equipment : MonoBehaviour
         {
             var go = collision.gameObject;
 
+            var equipable = go.GetComponent<IEquipable>();
+            if (equipable != null) 
+            {
+                equipable.AddEquipment(EquipmentActor);
+                GameActor.Instance.DestoryEquipment(EquipmentActor);
+            }
         }
     }
 

@@ -20,13 +20,17 @@ public class EquipmentActor
 
         var equipmentDefine = DataManager.Instance.EquipmentMap[tID];
         var secondaryAttrs = new List<ItemAttributeDefine>();
-        foreach(var attr in equipmentDefine.SecondaryAttrs)
+        var position = new Vector2(
+            UnityEngine.Random.Range(-8f, 8f),
+            UnityEngine.Random.Range(-4f, 4f));
+
+        foreach (var attr in equipmentDefine.SecondaryAttrs)
         {
             secondaryAttrs.Add(new ItemAttributeDefine
             {
                 AttributeName = attr.AttributeName,
                 AttributeValue = attr.AttributeValue,
-                Modifier = attr.Modifier
+                Modifier = attr.Modifier,
             });
         }
 
@@ -44,7 +48,8 @@ public class EquipmentActor
             },
             SecondaryAttributes = secondaryAttrs,
             DynamicAbilities = dynamicAbilities,
-            DynamicEffects = dynamicEffects
+            DynamicEffects = dynamicEffects,
+            Position = position
         };
         GameActor.Instance.AddEquipment(this);
     }
@@ -71,18 +76,25 @@ public class EquipmentActor
 
         var attrMMC = ScriptableObject.CreateInstance<AttributeBasedModCalculation>();
         attrMMC.attributeName = itemAttributeDefine.AttributeName;
+        var split = itemAttributeDefine.AttributeName.Split('.');
+        attrMMC.attributeSetName = split[0];
+        attrMMC.attributeShortName = split[1];
+
         attrMMC.captureType = AttributeBasedModCalculation.GEAttributeCaptureType.SnapShot;
         attrMMC.attributeFromType = AttributeBasedModCalculation.AttributeFrom.Source;
-        attrMMC.k = 1;
-        attrMMC.b = 0;
-
-        var modifier = new GameplayEffectModifier
+        if (itemAttributeDefine.Modifier == ModifierOp.Additive)
         {
-            AttributeName = itemAttributeDefine.AttributeName,
-            Operation = GEOperation.Add,
-            MMC = attrMMC
-        };
-        geData.Modifiers.Append(modifier);
+            attrMMC.k = 0;
+            attrMMC.b = itemAttributeDefine.AttributeValue;
+        }
+        else
+        {
+            attrMMC.k = 1;
+            attrMMC.b = 0;
+        }
+
+        var modifier = new GameplayEffectModifier(itemAttributeDefine.AttributeName, 0, GEOperation.Add, attrMMC);
+        geData.Modifiers = new GameplayEffectModifier[] { modifier };
 
         var ge = new GameplayEffect(geData);
 

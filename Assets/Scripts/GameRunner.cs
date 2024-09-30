@@ -1,5 +1,7 @@
 using GAS;
+using Sirenix.Serialization;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameRunner : MonoBehaviour
@@ -11,6 +13,8 @@ public class GameRunner : MonoBehaviour
 
     private void Awake()
     {
+        SavePath = Path.Combine(Application.persistentDataPath + "save_test.bin");
+
         Instance = this;
         _input = new PlayerInput();
         _input.Enable();
@@ -20,12 +24,21 @@ public class GameRunner : MonoBehaviour
 
     private void Load_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        
+        GameOver();
+
+        byte[] bytes = File.ReadAllBytes(SavePath);
+        var gameActor = SerializationUtility.DeserializeValue<GameActor>(bytes, DataFormat.Binary);
+        GameActor.Instance.Load(gameActor);
+        GameplayAbilitySystem.GAS.Unpause();
+        _isRunning = true;
     }
 
     private void Save_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        
+        byte[] bytes = SerializationUtility.SerializeValue(GameActor.Instance, DataFormat.Binary);
+        File.WriteAllBytes(SavePath, bytes);
+        GameOver();
+        GameActor.Instance.DestroyAll();
     }
 
     private void Start()
@@ -50,34 +63,37 @@ public class GameRunner : MonoBehaviour
         GameActor.Instance.EnemyDestroy += EnemyActor_Destroy;
 
         GameplayAbilitySystem.GAS.Unpause();
-        DestroyPlayer();
-        DestroyEnemies();
+        GameActor.Instance.DestroyAll();
         CreatePlayer();
         _isRunning = true;
     }
 
-    private void EnemyActor_Destroy(EnemyActor actor)
+
+    public void GameOver()
     {
-        foreach (var enemy in Enemies)
-        {
-            if (enemy.Actor == actor)
-            {
-                Destroy(enemy.gameObject);
-                break;
-            }
-        }
+        _isRunning = false;
+        GameActor.Instance.DestroyAll();
+        GameplayAbilitySystem.GAS.Pause();
     }
 
-    private void EnemyActor_Created(EnemyActor actor)
+    #region Player Management
+
+    [SerializeField] private GameObject prefabPlayer;
+    private Player _player;
+
+    public Player Player
     {
-        var position = new Vector3(
-            Random.Range(enemySpawnRect.xMin, enemySpawnRect.xMax),
-            Random.Range(enemySpawnRect.yMin, enemySpawnRect.yMax),
-            0);
-        var go = Instantiate(prefabEnemy);
-        go.transform.position = position;
-        var enemy = go.GetComponent<Enemy>();
-        enemy.Init(actor, _player);
+        get { return _player; }
+    }
+
+    [SerializeField] private GameObject prefabEquipment;
+    private Equipment _equipment;
+
+    private void CreatePlayer()
+    {
+        if (_player != null) return;
+        var actor = new PlayerActor();
+        actor.CreateByTID(10001);
     }
 
     private void PlayerActor_Destroy(PlayerActor actor)
@@ -88,71 +104,18 @@ public class GameRunner : MonoBehaviour
     private void PlayerActor_Created(PlayerActor actor)
     {
         var go = Instantiate(prefabPlayer);
-        go.transform.position = _playerSpawnPosition;
+        go.transform.position = actor.PlayerModel.Position;
         _player = go.GetComponent<Player>();
         _player.Init(actor);
-    }
-
-    private void EquipmentActor_Destroy(EquipmentActor actor)
-    {
-        Destroy(_equipment.gameObject);
-        _equipment = null;
-    }
-
-    private void EquipmentActor_Created(EquipmentActor actor)
-    {
-        if (_equipment != null)
-            return;
-
-        var go = Instantiate(prefabEquipment);
-        go.transform.position = _equipmentSpawnPosition;
-        _equipment = go.GetComponent<Equipment>();
-        _equipment.EquipmentActor = actor;
-    }
-
-    public void GameOver()
-    {
-        _isRunning = false;
-        GameplayAbilitySystem.GAS.Pause();
-    }
-
-    #region Player Management
-
-    [SerializeField] private GameObject prefabPlayer;
-    [SerializeField] private Vector3 _playerSpawnPosition = Vector3.zero;
-    private Player _player;
-
-    public Player Player
-    {
-        get { return _player; }
-    }
-
-    [SerializeField] private GameObject prefabEquipment;
-    [SerializeField] private Vector3 _equipmentSpawnPosition = Vector3.zero;
-    private Equipment _equipment;
-
-    private void CreatePlayer()
-    {
-        if (_player != null) return;
-        var actor = new PlayerActor();
-        actor.CreateByTID(10001);
-    }
-
-    private void DestroyPlayer()
-    {
-        if (_player == null) return;
-        Destroy(_player.gameObject);
-        _player = null;
     }
 
     #endregion
 
 
     #region Enemy Managment
-    
+
     [SerializeField] private GameObject prefabEnemy;
     private readonly List<Enemy> _enemies = new();
-    [SerializeField] private Rect enemySpawnRect;
 
     public List<Enemy> Enemies
     {
@@ -169,6 +132,11 @@ public class GameRunner : MonoBehaviour
             if (_enemies.Count == 0)
             {
                 SpawnEnemy();
+            }
+
+            if (_equipment == null)
+            {
+                SpawnEquipment();
             }
         }
     }
@@ -189,11 +157,53 @@ public class GameRunner : MonoBehaviour
         actor.CreateByTID(10001);
     }
 
-    private void DestroyEnemies()
+    private void EnemyActor_Destroy(EnemyActor actor)
     {
-        foreach (var enemy in _enemies) Destroy(enemy.gameObject);
-        _enemies.Clear();
+        foreach (var enemy in Enemies)
+        {
+            if (enemy.Actor == actor)
+            {
+                Destroy(enemy.gameObject);
+                break;
+            }
+        }
+    }
+
+    private void EnemyActor_Created(EnemyActor actor)
+    {
+        var go = Instantiate(prefabEnemy);
+        go.transform.position = actor.EnemyModel.Position;
+        var enemy = go.GetComponent<Enemy>();
+        enemy.Init(actor, _player);
     }
 
     #endregion
+
+
+    #region Equipment Managment
+    private void SpawnEquipment()
+    {
+        var actor = new EquipmentActor();
+        actor.CreateByTID(10001);
+    }
+
+    private void EquipmentActor_Destroy(EquipmentActor actor)
+    {
+        Destroy(_equipment.gameObject);
+        _equipment = null;
+    }
+
+    private void EquipmentActor_Created(EquipmentActor actor)
+    {
+        if (_equipment != null)
+            return;
+
+        var go = Instantiate(prefabEquipment);
+        go.transform.position = actor.EquipmentModel.Position;
+        _equipment = go.GetComponent<Equipment>();
+        _equipment.EquipmentActor = actor;
+    }
+    #endregion
+
+    private string SavePath;
 }

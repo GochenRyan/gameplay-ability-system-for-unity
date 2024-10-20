@@ -26,7 +26,8 @@ public class Equipment : MonoBehaviour
             if (equipable != null) 
             {
                 equipable.AddEquipment(EquipmentActor);
-                GameActor.Instance.DestoryEquipment(EquipmentActor);
+                EquipmentActor.Destroy();
+                GameObject.Destroy(this);
             }
         }
     }

@@ -1,4 +1,5 @@
 using GAS.Runtime;
+using Model;
 using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
@@ -7,10 +8,12 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 [Serializable]
-public class EnemyActor
+public class EnemyActor : Actor
 {
     [NonSerialized, OdinSerialize]
     public EnemyModel EnemyModel;
+
+    public EnemyActor(Actor parent) : base(parent) { }
 
     public void CreateByTID(int tID)
     {
@@ -40,9 +43,9 @@ public class EnemyActor
             Effects = dynamicEffects,
             Position = position
         };
-        
 
-        GameActor.Instance.AddEnemy(this);
+
+        Create();
     }
 
     public List<GameplayEffect> MakePlayerModelGE()
@@ -69,18 +72,5 @@ public class EnemyActor
             abilities.Add(ability);
         }
         return abilities;
-    }
-
-    public static int GenerateID()
-    {
-        var IDs = GameActor.Instance.AllEnemyActor.Keys;
-        if (IDs.Count == 0)
-        {
-            return 1;
-        }
-        else
-        {
-            return IDs.Max() + 1;
-        }
     }
 }

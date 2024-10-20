@@ -1,15 +1,17 @@
 using GAS.Runtime;
+using Model;
 using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.AddressableAssets;
 
 [Serializable]
-public class PlayerActor
+public class PlayerActor : Actor
 {
     [NonSerialized, OdinSerialize]
     public PlayerModel PlayerModel;
+
+    public PlayerActor(Actor parent) : base(parent) { }
 
     public void CreateByTID(int tID)
     {
@@ -35,7 +37,7 @@ public class PlayerActor
             Abilities = dynamicAbilities,
             Effects = dynamicEffects
         };
-        GameActor.Instance.AddPlayer(this);
+        Create();
     }
 
     public List<GameplayEffect> MakePlayerModelGE()
@@ -62,18 +64,5 @@ public class PlayerActor
             abilities.Add(ability);
         }
         return abilities;
-    }
-
-    public static int GenerateID()
-    {
-        var IDs = GameActor.Instance.AllPlayerActor.Keys;
-        if (IDs.Count == 0)
-        {
-            return 1;
-        }
-        else
-        {
-            return IDs.Max() + 1;
-        }
     }
 }

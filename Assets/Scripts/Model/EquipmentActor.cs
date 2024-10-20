@@ -1,4 +1,5 @@
 ﻿using GAS.Runtime;
+using Model;
 using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
@@ -6,10 +7,12 @@ using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class EquipmentActor
+public class EquipmentActor : Actor
 {
     [NonSerialized, OdinSerialize]
     public EquipmentModel EquipmentModel;
+
+    public EquipmentActor(Actor parent) : base(parent) { }
 
     public void CreateByTID(int tID)
     {
@@ -51,9 +54,9 @@ public class EquipmentActor
             DynamicEffects = dynamicEffects,
             Position = position
         };
-        GameActor.Instance.AddEquipment(this);
+        Create();
     }
-    
+
     public List<GameplayEffect> MakeEquipmentModelGE()
     {
         var ges = new List<GameplayEffect>();
@@ -123,18 +126,5 @@ public class EquipmentActor
         var ge = new GameplayEffect(geData);
 
         return ge;
-    }
-
-    public static int GenerateID()
-    {
-        var IDs = GameActor.Instance.AllEquipmentActor.Keys;
-        if (IDs.Count == 0 )
-        {
-            return 1;
-        }
-        else
-        {
-            return IDs.Max() + 1;
-        }
     }
 }

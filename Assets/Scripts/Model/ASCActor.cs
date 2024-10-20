@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class ASCActor
+    public class ASCActor : Actor
     {
+        public ASCActor(Actor actor) : base(actor) { }
+
         [NonSerialized, OdinSerialize]
         public ASCModel ASCModel;
 

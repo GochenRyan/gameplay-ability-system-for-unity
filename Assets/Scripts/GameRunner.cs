@@ -1,5 +1,7 @@
 using GAS;
+using Model;
 using Sirenix.Serialization;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -53,14 +55,8 @@ public class GameRunner : MonoBehaviour
 
     public void StartGame()
     {
-        GameActor.Instance.EquipmentCreated += EquipmentActor_Created;
-        GameActor.Instance.EquipmentDestroy += EquipmentActor_Destroy;
-
-        GameActor.Instance.PlayerCreated += PlayerActor_Created;
-        GameActor.Instance.PlayerDestroy += PlayerActor_Destroy;
-
-        GameActor.Instance.EnemyCreated += EnemyActor_Created;
-        GameActor.Instance.EnemyDestroy += EnemyActor_Destroy;
+        GameActor.Instance.ActorCreated += Actor_Created;
+        GameActor.Instance.ActorDestoryed += Actor_Destoryed;
 
         GameplayAbilitySystem.GAS.Unpause();
         GameActor.Instance.DestroyAll();
@@ -68,6 +64,43 @@ public class GameRunner : MonoBehaviour
         _isRunning = true;
     }
 
+    private void Actor_Destoryed(Type type, Actor actor)
+    {
+        if (type == typeof(PlayerActor))
+        {
+            var playerActor = actor as PlayerActor;
+            PlayerActor_Destroy(playerActor);
+        }
+        else if (type == typeof(EnemyActor))
+        {
+            var enemyActor = actor as EnemyActor;
+            EnemyActor_Destroy(enemyActor);
+        }
+        else if (type == typeof(EquipmentActor))
+        {
+            var equipmentActor = actor as EquipmentActor;
+            EquipmentActor_Destroy(equipmentActor);
+        }
+    }
+
+    private void Actor_Created(Type type, Actor actor)
+    {
+        if (type == typeof(PlayerActor))
+        {
+            var playerActor = actor as PlayerActor;
+            PlayerActor_Created(playerActor);
+        }
+        else if (type == typeof(EnemyActor))
+        {
+            var enemyActor = actor as EnemyActor;
+            EnemyActor_Created(enemyActor);
+        }
+        else if (type == typeof(EquipmentActor))
+        {
+            var equipmentActor = actor as EquipmentActor;
+            EquipmentActor_Created(equipmentActor);
+        }
+    }
 
     public void GameOver()
     {
@@ -92,7 +125,7 @@ public class GameRunner : MonoBehaviour
     private void CreatePlayer()
     {
         if (_player != null) return;
-        var actor = new PlayerActor();
+        var actor = new PlayerActor(GameActor.Instance);
         actor.CreateByTID(10001);
     }
 
@@ -153,7 +186,7 @@ public class GameRunner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        var actor = new EnemyActor();
+        var actor = new EnemyActor(GameActor.Instance);
         actor.CreateByTID(10001);
     }
 
@@ -183,7 +216,7 @@ public class GameRunner : MonoBehaviour
     #region Equipment Managment
     private void SpawnEquipment()
     {
-        var actor = new EquipmentActor();
+        var actor = new EquipmentActor(GameActor.Instance);
         actor.CreateByTID(10001);
     }
 

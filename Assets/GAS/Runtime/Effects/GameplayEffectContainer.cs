@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.GAS.Runtime.Core;
+using System;
 using System.Collections.Generic;
 
 namespace GAS.Runtime
@@ -30,6 +31,36 @@ namespace GAS.Runtime
                 if (gameplayEffectSpec.IsActive)
                 {
                     gameplayEffectSpec.Tick();
+                }
+            }
+
+            _cachedGameplayEffectSpecs.Clear();
+        }
+
+        public void MoveTick(MoveTickEvent e)
+        {
+            _cachedGameplayEffectSpecs.AddRange(_gameplayEffectSpecs);
+
+            foreach (var gameplayEffectSpec in _cachedGameplayEffectSpecs)
+            {
+                if (gameplayEffectSpec.IsActive)
+                {
+                    gameplayEffectSpec.MoveTick(e);
+                }
+            }
+
+            _cachedGameplayEffectSpecs.Clear();
+        }
+
+        public void TurnTick(TurnTickEvent e)
+        {
+            _cachedGameplayEffectSpecs.AddRange(_gameplayEffectSpecs);
+
+            foreach (var gameplayEffectSpec in _cachedGameplayEffectSpecs)
+            {
+                if (gameplayEffectSpec.IsActive)
+                {
+                    gameplayEffectSpec.TurnTick(e);
                 }
             }
 

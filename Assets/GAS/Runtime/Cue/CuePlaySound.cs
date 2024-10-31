@@ -1,4 +1,5 @@
 using System;
+using Assets.GAS.Runtime.Core;
 using GAS.General;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -72,6 +73,14 @@ namespace GAS.Runtime
         }
 
         public override void OnTick()
+        {
+        }
+
+        public override void OnMoveTick(MoveTickEvent e)
+        {
+        }
+
+        public override void OnTurnTick(TurnTickEvent e)
         {
         }
     }

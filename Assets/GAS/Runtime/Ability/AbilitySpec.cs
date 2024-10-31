@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.GAS.Runtime.Core;
+using System;
 
 namespace GAS.Runtime
 {
@@ -213,8 +214,33 @@ namespace GAS.Runtime
             }
         }
 
+        public void MoveTick(MoveTickEvent e)
+        {
+            if (IsActive)
+            {
+                AbilityMoveTick(e);
+            }
+        }
+
+        public void TurnTick(TurnTickEvent e)
+        {
+            if (IsActive)
+            {
+                AbilityTurnTick(e);
+            }
+        }
+
         protected virtual void AbilityTick()
         {
+        }
+
+        protected virtual void AbilityMoveTick(MoveTickEvent e)
+        {
+        }
+
+        protected virtual void AbilityTurnTick(TurnTickEvent e)
+        {
+
         }
 
         public abstract void ActivateAbility(params object[] args);

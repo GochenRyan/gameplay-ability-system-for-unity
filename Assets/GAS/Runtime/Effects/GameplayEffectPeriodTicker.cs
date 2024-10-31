@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.GAS.Runtime.Core;
+using UnityEngine;
 
 namespace GAS.Runtime
 {
@@ -14,6 +15,8 @@ namespace GAS.Runtime
         }
 
         private float Period => _spec.GameplayEffect.Period;
+        private int MovePeriod => _spec.GameplayEffect.MovePeriod;
+        private int TurnPeriod => _spec.GameplayEffect.TurnPeriod;
 
         public void Tick()
         {
@@ -56,6 +59,19 @@ namespace GAS.Runtime
             }
         }
 
+        public void MoveTick(MoveTickEvent e)
+        {
+            _spec.TriggerOnMoveTick(e);
+            
+            UpdateMovePeriod(e);
+        }
+
+        public void TurnTick(TurnTickEvent e)
+        {
+            _spec.TriggerOnTurnTick(e);
+            UpdateTurnPeriod(e);
+        }
+
         /// <summary>
         /// 注意: Period 小于 0.01f 可能出现误差, 基本够用了
         /// </summary>
@@ -94,6 +110,43 @@ namespace GAS.Runtime
         public void ResetPeriod()
         {
             _periodRemaining = Period;
+        }
+
+
+        private void UpdateMovePeriod(MoveTickEvent e)
+        {
+            if (MovePeriod <= 0) return;
+
+            var actualMoveDuration = e.CurMove - _spec.ActivationMove;
+            if (actualMoveDuration < 0)
+                return;
+
+            if (actualMoveDuration > _spec.MoveDuration)
+                return;
+
+            // Can only move step by step.
+            if (actualMoveDuration % MovePeriod == 0)
+            {
+                _spec.PeriodExecution?.TriggerOnExecute();
+            }
+        }
+
+        private void UpdateTurnPeriod(TurnTickEvent e)
+        {
+            if (TurnPeriod <= 0) return;
+
+            var actualTurnDuration = e.CurTurn - _spec.ActivationTurn;
+            if (actualTurnDuration < 0)
+                return;
+
+            if (actualTurnDuration > _spec.TurnDuration)
+                return;
+
+            // Can only move step by step.
+            if (actualTurnDuration % TurnPeriod == 0)
+            {
+                _spec.PeriodExecution?.TriggerOnExecute();
+            }
         }
     }
 }

@@ -5,14 +5,20 @@ namespace GAS.Runtime
 {
     public enum EffectsDurationPolicy
     {
-        [LabelText("瞬时(Instant)", SdfIconType.LightningCharge)]
+        [LabelText("瞬时", SdfIconType.LightningCharge)]
         Instant = 1,
 
-        [LabelText("永久(Infinite)", SdfIconType.Infinity)]
+        [LabelText("永久", SdfIconType.Infinity)]
         Infinite,
 
-        [LabelText("限时(Duration)", SdfIconType.HourglassSplit)]
-        Duration
+        [LabelText("限时", SdfIconType.HourglassSplit)]
+        Duration,
+
+        [LabelText("限步数", SdfIconType.HourglassSplit)]
+        MoveDuration,
+
+        [LabelText("限回合数", SdfIconType.HourglassSplit)]
+        TurnDuration
     }
 
     public class GameplayEffect
@@ -20,7 +26,11 @@ namespace GAS.Runtime
         public readonly string GameplayEffectName;
         public readonly EffectsDurationPolicy DurationPolicy;
         public readonly float Duration; // -1 represents infinite duration
+        public readonly int MoveDuration;
+        public readonly int TurnDuration;
         public readonly float Period;
+        public readonly int MovePeriod;
+        public readonly int TurnPeriod;
         public readonly GameplayEffect PeriodExecution;
         public readonly GameplayEffectTagContainer TagContainer;
 
@@ -77,6 +87,10 @@ namespace GAS.Runtime
             DurationPolicy = data.GetDurationPolicy();
             Duration = data.GetDuration();
             Period = data.GetPeriod();
+            MoveDuration = data.GetMoveDuration();
+            MovePeriod = data.GetMovePeriod();
+            TurnDuration = data.GetTurnDuration();
+            TurnPeriod = data.GetTurnPeriod();
             TagContainer = new GameplayEffectTagContainer(data);
             var periodExecutionGe = data.GetPeriodExecution();
 #if UNITY_EDITOR

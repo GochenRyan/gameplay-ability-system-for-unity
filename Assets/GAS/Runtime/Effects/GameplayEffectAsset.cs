@@ -53,6 +53,7 @@ namespace GAS.Runtime
 
         [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
         [LabelWidth(WIDTH_LABEL)]
+        [ShowIf("IsDurationalPolicy")]
         [EnableIf("@DurationPolicy == EffectsDurationPolicy.Duration")]
         [Unit(Units.Second)]
         [ValidateInput("@DurationPolicy != EffectsDurationPolicy.Duration || Duration > 0", ERROR_DURATION)]
@@ -63,8 +64,7 @@ namespace GAS.Runtime
         [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
         [LabelText(GASTextDefine.LABLE_GE_INTERVAL, SdfIconType.AlarmFill)]
         [LabelWidth(WIDTH_LABEL)]
-        [ShowIf("@DurationPolicy != EffectsDurationPolicy.Duration")]
-        [EnableIf("IsDurationalPolicy")]
+        [ShowIf("@DurationPolicy == EffectsDurationPolicy.Infinite")]
         [Unit(Units.Second)]
         [PropertyOrder(3)]
         public float Period;
@@ -100,6 +100,64 @@ namespace GAS.Runtime
         [PropertyOrder(4)]
         public GameplayEffectAsset PeriodExecution;
 
+        [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
+        [LabelWidth(WIDTH_LABEL)]
+        [ShowIf("IsMoveDurationalPolicy")]
+        [EnableIf("@DurationPolicy == EffectsDurationPolicy.MoveDuration")]
+        [ValidateInput("@DurationPolicy != EffectsDurationPolicy.MoveDuration || MoveDuration > 0", ERROR_DURATION)]
+        [LabelText(GASTextDefine.LABLE_GE_MOVE_DURATION, SdfIconType.Alarm)]
+        [PropertyOrder(5)]
+        public int MoveDuration;
+
+        [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
+        [LabelText(GASTextDefine.LABLE_GE_MOVE_INTERVAL, SdfIconType.AlarmFill)]
+        [LabelWidth(WIDTH_LABEL)]
+        [ShowIf("@DurationPolicy == EffectsDurationPolicy.Infinite")]
+        [PropertyOrder(5)]
+        public int MovePeriod;
+
+        [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
+        [LabelText(GASTextDefine.LABLE_GE_MOVE_INTERVAL, SdfIconType.AlarmFill)]
+        [LabelWidth(WIDTH_LABEL)]
+        [ShowIf("@DurationPolicy == EffectsDurationPolicy.MoveDuration")]
+        [PropertyRange(0, "@MoveDuration")]
+        [PropertyOrder(5)]
+        [ShowInInspector]
+        public int MovePeriodForDurational
+        {
+            get => MovePeriod;
+            set => MovePeriod = value;
+        }
+
+        [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
+        [LabelWidth(WIDTH_LABEL)]
+        [ShowIf("IsTurnDurationalPolicy")]
+        [EnableIf("@DurationPolicy == EffectsDurationPolicy.TurnDuration")]
+        [ValidateInput("@DurationPolicy != EffectsDurationPolicy.TurnDuration || TurnDuration > 0", ERROR_DURATION)]
+        [LabelText(GASTextDefine.LABLE_GE_TURN_DURATION, SdfIconType.Alarm)]
+        [PropertyOrder(6)]
+        public int TurnDuration;
+
+        [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
+        [LabelText(GASTextDefine.LABLE_GE_TURN_INTERVAL, SdfIconType.AlarmFill)]
+        [LabelWidth(WIDTH_LABEL)]
+        [ShowIf("@DurationPolicy == EffectsDurationPolicy.Infinite")]
+        [PropertyOrder(6)]
+        public int TurnPeriod;
+
+        [TabGroup(GRP_BASE_H_RIGHT, "Policy")]
+        [LabelText(GASTextDefine.LABLE_GE_TURN_INTERVAL, SdfIconType.AlarmFill)]
+        [LabelWidth(WIDTH_LABEL)]
+        [ShowIf("@DurationPolicy == EffectsDurationPolicy.TurnDuration")]
+        [PropertyRange(0, "@TurnDuration")]
+        [PropertyOrder(6)]
+        [ShowInInspector]
+        public int TurnPeriodForDurational
+        {
+            get => TurnPeriod;
+            set => TurnPeriod = value;
+        }
+
         #endregion Policy
 
         #region Stack
@@ -108,13 +166,13 @@ namespace GAS.Runtime
         [HorizontalGroup(GRP_DATA_H2, order: 2, Width = 1 - 0.618f)]
         [TabGroup(GRP_DATA_STACK, "Stacking", SdfIconType.Stack, TextColor = "#9B4AE3", Order = 1)]
         [HideLabel]
-        [EnableIf("IsDurationalPolicy")]
+        [EnableIf("IsDurationalTypePolicy")]
         [InfoBox("瞬时效果无法叠加", InfoMessageType.None, VisibleIf = "@IsInstantPolicy()")]
         public GameplayEffectStackingConfig Stacking;
 
 #if UNITY_EDITOR
         [TabGroup(GRP_DATA_STACK, "Stacking")]
-        [ShowIf("@IsDurationalPolicy() && Stacking.stackingType != StackingType.None")]
+        [ShowIf("@IsDurationalTypePolicy() && Stacking.stackingType != StackingType.None")]
         [Button("使用资产名称作为堆叠识别码", ButtonSizes.Medium, Icon = SdfIconType.Hammer)]
         private void SetStackingCodeNameAsAssetName()
         {
@@ -130,7 +188,7 @@ namespace GAS.Runtime
 
         [TabGroup(GRP_DATA_GRANTED_ABILITIES, "Granted Abilities", SdfIconType.YinYang, TextColor = "#D6626E",
             Order = 2)]
-        [EnableIf("IsDurationalPolicy")]
+        [EnableIf("IsDurationalTypePolicy")]
         [InfoBox("瞬时效果无法赋予能力", InfoMessageType.None, VisibleIf = "@IsInstantPolicy()")]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
         [InfoBox(ERROR_GRANTED_ABILITY_INVALID, InfoMessageType.Error, VisibleIf = "IsGrantedAbilitiesInvalid")]
@@ -177,7 +235,7 @@ namespace GAS.Runtime
         [ValueDropdown("@ValueDropdownHelper.GameplayTagChoices", IsUniqueList = true, HideChildProperties = true)]
         [LabelText(GASTextDefine.TITLE_GE_TAG_AssetTags)]
         [Tooltip(GASTextDefine.TIP_GE_TAG_AssetTags)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         public GameplayTag[] AssetTags;
 
         [Space()]
@@ -186,7 +244,7 @@ namespace GAS.Runtime
         [ValueDropdown("@ValueDropdownHelper.GameplayTagChoices", IsUniqueList = true, HideChildProperties = true)]
         [LabelText(GASTextDefine.TITLE_GE_TAG_GrantedTags)]
         [Tooltip(GASTextDefine.TIP_GE_TAG_GrantedTags)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         public GameplayTag[] GrantedTags;
 
         [Space()]
@@ -203,7 +261,7 @@ namespace GAS.Runtime
         [ValueDropdown("@ValueDropdownHelper.GameplayTagChoices", IsUniqueList = true, HideChildProperties = true)]
         [LabelText(GASTextDefine.TITLE_GE_TAG_OngoingRequiredTags)]
         [Tooltip(GASTextDefine.TIP_GE_TAG_OngoingRequiredTags)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         public GameplayTag[] OngoingRequiredTags;
 
         [Space()]
@@ -237,7 +295,7 @@ namespace GAS.Runtime
         [Space()]
         [TabGroup(GRP_DATA_CUE, "Cues")]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         [InfoBox(ERROR_NONE_CUE, InfoMessageType.Error, VisibleIf = "IsCueDurationalNone")]
         [AssetSelector]
         [LabelText(GASTextDefine.TITLE_GE_CUE_CueDurational)]
@@ -247,7 +305,7 @@ namespace GAS.Runtime
         [Space()]
         [TabGroup(GRP_DATA_CUE, "Cues")]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         [AssetSelector]
         [LabelText(GASTextDefine.TITLE_GE_CUE_CueOnAdd)]
         public GameplayCueInstant[] CueOnAdd;
@@ -255,7 +313,7 @@ namespace GAS.Runtime
         [Space()]
         [TabGroup(GRP_DATA_CUE, "Cues")]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         [AssetSelector]
         [LabelText(GASTextDefine.TITLE_GE_CUE_CueOnRemove)]
         public GameplayCueInstant[] CueOnRemove;
@@ -263,7 +321,7 @@ namespace GAS.Runtime
         [Space()]
         [TabGroup(GRP_DATA_CUE, "Cues")]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         [AssetSelector]
         [LabelText(GASTextDefine.TITLE_GE_CUE_CueOnActivate)]
         public GameplayCueInstant[] CueOnActivate;
@@ -271,7 +329,7 @@ namespace GAS.Runtime
         [Space()]
         [TabGroup(GRP_DATA_CUE, "Cues")]
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
-        [ShowIf("IsDurationalPolicy")]
+        [ShowIf("IsDurationalTypePolicy")]
         [AssetSelector]
         [LabelText(GASTextDefine.TITLE_GE_CUE_CueOnDeactivate)]
         public GameplayCueInstant[] CueOnDeactivate;
@@ -293,9 +351,27 @@ namespace GAS.Runtime
             return IsDurationalPolicy() && Period > 0;
         }
 
+        bool IsDurationalTypePolicy()
+        {
+            return DurationPolicy == EffectsDurationPolicy.Duration 
+                || DurationPolicy == EffectsDurationPolicy.MoveDuration 
+                || DurationPolicy == EffectsDurationPolicy.TurnDuration 
+                || DurationPolicy == EffectsDurationPolicy.Infinite;
+        }
+
         bool IsDurationalPolicy()
         {
             return DurationPolicy == EffectsDurationPolicy.Duration || DurationPolicy == EffectsDurationPolicy.Infinite;
+        }
+
+        bool IsMoveDurationalPolicy()
+        {
+            return DurationPolicy == EffectsDurationPolicy.MoveDuration || DurationPolicy == EffectsDurationPolicy.Infinite;
+        }
+
+        bool IsTurnDurationalPolicy()
+        {
+            return DurationPolicy == EffectsDurationPolicy.TurnDuration || DurationPolicy == EffectsDurationPolicy.Infinite;
         }
 
         bool IsInstantPolicy() => DurationPolicy == EffectsDurationPolicy.Instant;
@@ -335,6 +411,14 @@ namespace GAS.Runtime
         public float GetDuration() => Duration;
 
         public float GetPeriod() => Period;
+
+        public int GetMoveDuration() => MoveDuration;
+
+        public int GetMovePeriod() => MovePeriod;
+
+        public int GetTurnDuration() => TurnDuration;
+
+        public int GetTurnPeriod() => TurnPeriod;
 
         public IGameplayEffectData GetPeriodExecution() => PeriodExecution;
 

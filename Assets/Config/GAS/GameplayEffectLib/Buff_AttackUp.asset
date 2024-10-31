@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: Buff_AttackUp
   m_EditorClassIdentifier: 
   Description: 
-  DurationPolicy: 2
+  DurationPolicy: 1
   Duration: 0
   Period: 0
   PeriodExecution: {fileID: 0}
+  MoveDuration: 0
+  MovePeriod: 0
+  TurnDuration: 0
+  TurnPeriod: 0
   Stacking:
     stackingType: 0
     stackingCodeName: Buff_AttackUp

@@ -1,3 +1,4 @@
+using Assets.GAS.Runtime.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -259,6 +260,19 @@ namespace GAS.Runtime
             AbilityContainer.Tick();
             GameplayEffectContainer.Tick();
         }
+
+        public void MoveTick(MoveTickEvent e)
+        {
+            AbilityContainer.MoveTick(e);
+            GameplayEffectContainer.MoveTick(e);
+        }
+
+        public void TurnTick(TurnTickEvent e)
+        {
+            AbilityContainer.TurnTick(e);
+            GameplayEffectContainer.TurnTick(e);
+        }
+
 
         public Dictionary<string, float> DataSnapshot()
         {

@@ -6,6 +6,10 @@
         EffectsDurationPolicy GetDurationPolicy();
         float GetDuration();
         float GetPeriod();
+        int GetMoveDuration();
+        int GetMovePeriod();
+        int GetTurnDuration();
+        int GetTurnPeriod();
 
         /// <summary>
         /// 必须是Instant型的GameplayEffect

@@ -37,6 +37,26 @@ namespace GAS.Runtime
             return 0;
         }
 
+        public virtual int GetMoveDuration()
+        {
+            return -1;
+        }
+
+        public virtual int GetMovePeriod()
+        {
+            return 0;
+        }
+
+        public virtual int GetTurnDuration()
+        {
+            return -1;
+        }
+
+        public virtual int GetTurnPeriod()
+        {
+            return 0;
+        }
+
         public virtual IGameplayEffectData GetPeriodExecution()
         {
             return null;

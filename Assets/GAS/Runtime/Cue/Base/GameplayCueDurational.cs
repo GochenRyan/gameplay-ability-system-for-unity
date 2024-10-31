@@ -1,3 +1,4 @@
+using Assets.GAS.Runtime.Core;
 using UnityEngine;
 
 namespace GAS.Runtime
@@ -39,6 +40,8 @@ namespace GAS.Runtime
         public abstract void OnGameplayEffectActivate();
         public abstract void OnGameplayEffectDeactivate();
         public abstract void OnTick();
+        public abstract void OnMoveTick(MoveTickEvent e);
+        public abstract void OnTurnTick(TurnTickEvent e);
     }
 
     public abstract class GameplayCueDurationalSpec<T> : GameplayCueDurationalSpec where T : GameplayCueDurational

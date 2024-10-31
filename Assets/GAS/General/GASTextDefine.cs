@@ -64,13 +64,17 @@
         #region GameplayEffect
         
         public const string TIP_BASE_INFO="仅用于描述，方便理解。";
-        public const string TIP_GE_POLICY="Instant=瞬时，Duration=持续性，Infinite=永久";
+        public const string TIP_GE_POLICY="Instant=瞬时，Duration=持续性，Infinite=永久，MoveDuration=持续步数，TurnDuration=持续回合数";
         public const string LABLE_GE_NAME = "效果名称";
         public const string LABLE_GE_DESCRIPTION = "效果描述";
         public const string TITLE_GE_POLICY="Gameplay Effect实施策略";
         public const string LABLE_GE_POLICY = "时限策略";
         public const string LABLE_GE_DURATION = "持续时间";
         public const string LABLE_GE_INTERVAL = "间隔时间";
+        public const string LABLE_GE_MOVE_DURATION = "持续步数";
+        public const string LABLE_GE_MOVE_INTERVAL = "间隔步数";
+        public const string LABLE_GE_TURN_DURATION = "持续回合数";
+        public const string LABLE_GE_TURN_INTERVAL = "间隔回合数";
         public const string LABLE_GE_EXEC = "间隔效果";
         public const string TITLE_GE_GrantedAbilities = "授予能力(Ability)";
         public const string TITLE_GE_MOD = "修改器Modifier";

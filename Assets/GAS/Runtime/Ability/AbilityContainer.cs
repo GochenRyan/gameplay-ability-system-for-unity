@@ -1,3 +1,4 @@
+using Assets.GAS.Runtime.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,6 +22,30 @@ namespace GAS.Runtime
             foreach (var abilitySpec in _cachedAbilities)
             {
                 abilitySpec.Tick();
+            }
+
+            _cachedAbilities.Clear();
+        }
+
+        public void MoveTick(MoveTickEvent e)
+        {
+            _cachedAbilities.AddRange(_abilities.Values);
+
+            foreach (var abilitySpec in _cachedAbilities)
+            {
+                abilitySpec.MoveTick(e);
+            }
+
+            _cachedAbilities.Clear();
+        }
+
+        public void TurnTick(TurnTickEvent e)
+        {
+            _cachedAbilities.AddRange(_abilities.Values);
+
+            foreach (var abilitySpec in _cachedAbilities)
+            {
+                abilitySpec.TurnTick(e);
             }
 
             _cachedAbilities.Clear();

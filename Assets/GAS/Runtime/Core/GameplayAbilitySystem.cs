@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.GAS.Runtime.Core;
 using GAS.General;
 using GAS.Runtime;
 using UnityEngine;
@@ -91,6 +92,40 @@ namespace GAS
             foreach (var abilitySystemComponent in _cachedAbilitySystemComponents)
             {
                 abilitySystemComponent.Tick();
+            }
+
+            _cachedAbilitySystemComponents.Clear();
+
+            Profiler.EndSample();
+        }
+
+        public void MoveTick(MoveTickEvent e)
+        {
+            Profiler.BeginSample($"{nameof(GameplayAbilitySystem)}::MoveTick()");
+
+            _cachedAbilitySystemComponents.Clear();
+            _cachedAbilitySystemComponents.AddRange(AbilitySystemComponents);
+
+            foreach (var abilitySystemComponent in _cachedAbilitySystemComponents)
+            {
+                abilitySystemComponent.MoveTick(e);
+            }
+
+            _cachedAbilitySystemComponents.Clear();
+
+            Profiler.EndSample();
+        }
+
+        public void TurnTick(TurnTickEvent e)
+        {
+            Profiler.BeginSample($"{nameof(GameplayAbilitySystem)}::TurnTick()");
+
+            _cachedAbilitySystemComponents.Clear();
+            _cachedAbilitySystemComponents.AddRange(AbilitySystemComponents);
+
+            foreach (var abilitySystemComponent in _cachedAbilitySystemComponents)
+            {
+                abilitySystemComponent.TurnTick(e);
             }
 
             _cachedAbilitySystemComponents.Clear();

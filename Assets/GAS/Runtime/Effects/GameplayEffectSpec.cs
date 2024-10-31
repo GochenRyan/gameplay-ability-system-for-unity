@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.GAS.Runtime.Core;
 using GAS.General;
 using UnityEngine;
 
@@ -49,6 +50,11 @@ namespace GAS.Runtime
         }
         public GameplayEffect GameplayEffect { get; }
         public float ActivationTime { get; private set; }
+
+        public int ActivationMove { get; private set; }
+
+        public int ActivationTurn { get; private set; }
+
         public float Level { get; private set; }
         public AbilitySystemComponent Source { get; private set; }
         public AbilitySystemComponent Owner { get; private set; }
@@ -56,6 +62,8 @@ namespace GAS.Runtime
         public bool IsActive { get; private set; }
         public GameplayEffectPeriodTicker PeriodTicker { get; }
         public float Duration { get; private set; }
+        public int MoveDuration { get; private set; }
+        public int TurnDuration { get; private set; }
         public EffectsDurationPolicy DurationPolicy { get; private set; }
         public GameplayEffectSpec PeriodExecution { get; private set; }
         public GameplayEffectModifier[] Modifiers { get; private set; }
@@ -94,6 +102,16 @@ namespace GAS.Runtime
         public void SetDuration(float duration)
         {
             Duration = duration;
+        }
+
+        public void SetMoveDuration(int  moveDuration)
+        {
+            MoveDuration = moveDuration; 
+        }
+
+        public void SetTurnDuration(int turnDuration)
+        {
+            TurnDuration = turnDuration;
         }
 
         public void SetDurationPolicy(EffectsDurationPolicy durationPolicy)
@@ -164,6 +182,16 @@ namespace GAS.Runtime
             PeriodTicker?.Tick();
         }
 
+        public void TurnTick(TurnTickEvent e)
+        {
+            PeriodTicker?.TurnTick(e);
+        }
+
+        public void MoveTick(MoveTickEvent e)
+        {
+            PeriodTicker?.MoveTick(e);
+        }
+
         void TriggerInstantCues(GameplayCueInstant[] cues)
         {
             foreach (var cue in cues) cue.ApplyFrom(this);
@@ -232,6 +260,18 @@ namespace GAS.Runtime
             foreach (var cue in _cueDurationalSpecs) cue.OnTick();
         }
 
+        private void CueOnMoveTick(MoveTickEvent e)
+        {
+            if (GameplayEffect.CueDurational == null || GameplayEffect.CueDurational.Length <= 0) return;
+            foreach (var cue in _cueDurationalSpecs) cue.OnMoveTick(e);
+        }
+
+        private void CueOnTurnTick(TurnTickEvent e)
+        {
+            if (GameplayEffect.CueDurational == null || GameplayEffect.CueDurational.Length <= 0) return;
+            foreach (var cue in _cueDurationalSpecs) cue.OnTurnTick(e);
+        }
+
         public void TriggerOnExecute()
         {
             Owner.GameplayEffectContainer.RemoveGameplayEffectWithAnyTags(GameplayEffect.TagContainer
@@ -276,6 +316,20 @@ namespace GAS.Runtime
             if (DurationPolicy == EffectsDurationPolicy.Duration ||
                 DurationPolicy == EffectsDurationPolicy.Infinite)
                 CueOnTick();
+        }
+
+        public void TriggerOnMoveTick(MoveTickEvent e)
+        {
+            if (DurationPolicy == EffectsDurationPolicy.MoveDuration ||
+                DurationPolicy == EffectsDurationPolicy.Infinite)
+                CueOnMoveTick(e);
+        }
+
+        public void TriggerOnTurnTick(TurnTickEvent e)
+        {
+            if (DurationPolicy == EffectsDurationPolicy.TurnDuration ||
+                DurationPolicy == EffectsDurationPolicy.Infinite)
+                CueOnTurnTick(e);
         }
 
         public void TriggerOnImmunity()

@@ -17,11 +17,13 @@ namespace GAS
 
         private void OnMoveTick(object sender, MoveTickEvent e)
         {
+            CurrentMove = e.CurMove;
             _gas.MoveTick(e);
         }
 
         private void OnTurnTick(object sender, TurnTickEvent e)
         {
+            CurrentTurn = e.CurTurn;
             _gas.TurnTick(e);
         }
 
@@ -35,5 +37,8 @@ namespace GAS
         {
             _gas.ClearComponents();
         }
+
+        public static int CurrentMove { get; private set; } = 0;
+        public static int CurrentTurn { get; private set; } = 0;
     }
 }

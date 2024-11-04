@@ -6,12 +6,16 @@ namespace GAS.Runtime
     public class GameplayEffectPeriodTicker
     {
         private float _periodRemaining;
+        private float _movePeriodRemaining;
+        private float _turnPeriodRemaining;
         private readonly GameplayEffectSpec _spec;
 
         public GameplayEffectPeriodTicker(GameplayEffectSpec spec)
         {
             _spec = spec;
             _periodRemaining = Period;
+            _movePeriodRemaining = MovePeriod;
+            _turnPeriodRemaining = TurnPeriod;
         }
 
         private float Period => _spec.GameplayEffect.Period;
@@ -64,12 +68,78 @@ namespace GAS.Runtime
             _spec.TriggerOnMoveTick(e);
             
             UpdateMovePeriod(e);
+
+            if (_spec.DurationPolicy == EffectsDurationPolicy.MoveDuration && _spec.MoveDurationRemaining() <= 0)
+            {
+                // 处理STACKING
+                if (_spec.GameplayEffect.Stacking.stackingType == StackingType.None)
+                {
+                    _spec.RemoveSelf();
+                }
+                else
+                {
+                    if (_spec.GameplayEffect.Stacking.expirationPolicy == ExpirationPolicy.ClearEntireStack)
+                    {
+                        _spec.RemoveSelf();
+                    }
+                    else if (_spec.GameplayEffect.Stacking.expirationPolicy ==
+                             ExpirationPolicy.RemoveSingleStackAndRefreshDuration)
+                    {
+                        if (_spec.StackCount > 1)
+                        {
+                            _spec.RefreshStack(_spec.StackCount - 1);
+                            _spec.RefreshMoveDuration();
+                        }
+                        else
+                        {
+                            _spec.RemoveSelf();
+                        }
+                    }
+                    else if (_spec.GameplayEffect.Stacking.expirationPolicy == ExpirationPolicy.RefreshDuration)
+                    {
+                        _spec.RefreshMoveDuration();
+                    }
+                }
+            }
         }
 
         public void TurnTick(TurnTickEvent e)
         {
             _spec.TriggerOnTurnTick(e);
             UpdateTurnPeriod(e);
+
+            if (_spec.DurationPolicy == EffectsDurationPolicy.TurnDuration && _spec.TurnDurationRemaining() <= 0)
+            {
+                // 处理STACKING
+                if (_spec.GameplayEffect.Stacking.stackingType == StackingType.None)
+                {
+                    _spec.RemoveSelf();
+                }
+                else
+                {
+                    if (_spec.GameplayEffect.Stacking.expirationPolicy == ExpirationPolicy.ClearEntireStack)
+                    {
+                        _spec.RemoveSelf();
+                    }
+                    else if (_spec.GameplayEffect.Stacking.expirationPolicy ==
+                             ExpirationPolicy.RemoveSingleStackAndRefreshDuration)
+                    {
+                        if (_spec.StackCount > 1)
+                        {
+                            _spec.RefreshStack(_spec.StackCount - 1);
+                            _spec.RefreshTurnDuration();
+                        }
+                        else
+                        {
+                            _spec.RemoveSelf();
+                        }
+                    }
+                    else if (_spec.GameplayEffect.Stacking.expirationPolicy == ExpirationPolicy.RefreshDuration)
+                    {
+                        _spec.RefreshTurnDuration();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -112,21 +182,32 @@ namespace GAS.Runtime
             _periodRemaining = Period;
         }
 
+        public void ResetMovePeriod()
+        {
+            _movePeriodRemaining = MovePeriod;
+        }
+
+        public void ResetTurnPeriod()
+        {
+            _turnPeriodRemaining = TurnPeriod;
+        }
 
         private void UpdateMovePeriod(MoveTickEvent e)
         {
             if (MovePeriod <= 0) return;
 
             var actualMoveDuration = e.CurMove - _spec.ActivationMove;
-            if (actualMoveDuration < 0)
+            if (actualMoveDuration <= 0)
                 return;
 
             if (actualMoveDuration > _spec.MoveDuration)
                 return;
 
-            // Can only move step by step.
-            if (actualMoveDuration % MovePeriod == 0)
+            _movePeriodRemaining--;
+
+            if (_movePeriodRemaining == 0)
             {
+                _movePeriodRemaining += MovePeriod;
                 _spec.PeriodExecution?.TriggerOnExecute();
             }
         }
@@ -142,9 +223,11 @@ namespace GAS.Runtime
             if (actualTurnDuration > _spec.TurnDuration)
                 return;
 
-            // Can only move step by step.
-            if (actualTurnDuration % TurnPeriod == 0)
+            _turnPeriodRemaining--;
+
+            if (_turnPeriodRemaining == 0)
             {
+                _turnPeriodRemaining += TurnPeriod;
                 _spec.PeriodExecution?.TriggerOnExecute();
             }
         }

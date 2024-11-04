@@ -24,5 +24,17 @@ namespace Assets.GAS.Runtime.Core
                 return _instance;
             } 
         }
+
+        public void NextMove(int preMove, int curMove)
+        {
+            var e = new MoveTickEvent(preMove, curMove);
+            MoveTick.Invoke(this, e);
+        }
+
+        public void NextTurn(int preTurn, int curTurn)
+        {
+            var e = new TurnTickEvent(preTurn, curTurn);
+            TurnTick.Invoke(this, e);
+        }
     }
 }

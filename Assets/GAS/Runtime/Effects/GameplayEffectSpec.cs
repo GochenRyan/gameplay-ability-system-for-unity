@@ -26,6 +26,8 @@ namespace GAS.Runtime
         {
             GameplayEffect = gameplayEffect;
             Duration = GameplayEffect.Duration;
+            MoveDuration = GameplayEffect.MoveDuration;
+            TurnDuration = GameplayEffect.TurnDuration;
             DurationPolicy = GameplayEffect.DurationPolicy;
             Stacking = GameplayEffect.Stacking;
             Modifiers = GameplayEffect.Modifiers;
@@ -87,6 +89,22 @@ namespace GAS.Runtime
                 return -1;
 
             return Mathf.Max(0, Duration - (Time.time - ActivationTime));
+        }
+
+        public int MoveDurationRemaining()
+        {
+            if (DurationPolicy == EffectsDurationPolicy.Infinite)
+                return -1;
+
+            return Math.Max(0, MoveDuration - (GasHost.CurrentMove - ActivationMove));
+        }
+
+        public int TurnDurationRemaining()
+        {
+            if (DurationPolicy == EffectsDurationPolicy.Infinite)
+                return -1;
+
+            return Math.Max(0, TurnDuration - (GasHost.CurrentTurn - ActivationTurn));
         }
 
         public void SetLevel(float level)
@@ -166,6 +184,8 @@ namespace GAS.Runtime
             if (IsActive) return;
             IsActive = true;
             ActivationTime = Time.time;
+            ActivationMove = GasHost.CurrentMove;
+            ActivationTurn = GasHost.CurrentTurn;
             TriggerOnActivation();
         }
 
@@ -437,11 +457,15 @@ namespace GAS.Runtime
                 if (Stacking.durationRefreshPolicy == DurationRefreshPolicy.RefreshOnSuccessfulApplication)
                 {
                     RefreshDuration();
+                    RefreshMoveDuration();
+                    RefreshTurnDuration();
                 }
                 // 是否重置Period
                 if (Stacking.periodResetPolicy == PeriodResetPolicy.ResetOnSuccessfulApplication)
                 {
                     PeriodTicker.ResetPeriod();
+                    PeriodTicker.ResetMovePeriod();
+                    PeriodTicker.ResetTurnPeriod();
                 }
             }
             else
@@ -463,6 +487,8 @@ namespace GAS.Runtime
                     else
                     {
                         RefreshDuration();
+                        RefreshMoveDuration();
+                        RefreshTurnDuration();
                     }
                 }
             }
@@ -472,10 +498,19 @@ namespace GAS.Runtime
         {
             ActivationTime = Time.time;
         }
-        
+
+        public void RefreshMoveDuration()
+        {
+            ActivationMove = GasHost.CurrentMove;
+        }
+
+        public void RefreshTurnDuration()
+        {
+            ActivationTurn = GasHost.CurrentTurn;
+        }
+
         private void OnStackCountChange(int oldStackCount, int newStackCount)
         {
-            
             onStackCountChanged?.Invoke(oldStackCount, newStackCount);
         }
         

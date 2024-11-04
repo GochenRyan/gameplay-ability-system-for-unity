@@ -342,13 +342,16 @@ namespace GAS.Runtime
         [ListDrawerSettings(ShowFoldout = true, ShowItemCount = false)]
         [InfoBox("依次执行多个Execution, 请注意执行顺序", InfoMessageType.Info, VisibleIf = "@$value != null && $value.Length > 1")]
         [LabelText(@"@IsInstantPolicy() ? ""仅在成功应用时执行"":""每次激活时都会执行""")]
-        [ShowIf("@IsInstantPolicy() || IsPeriodic()")]
+        [ShowIf("IsDurationalTypePolicy")]
         public GameplayEffectExecution[] Executions;
         #endregion
 
         bool IsPeriodic()
         {
-            return IsDurationalPolicy() && Period > 0;
+            return (DurationPolicy == EffectsDurationPolicy.Infinite && (Period > 0 || MovePeriod > 0 || TurnDuration > 0)) 
+                || (DurationPolicy == EffectsDurationPolicy.MoveDuration && MovePeriod > 0)
+                || (DurationPolicy == EffectsDurationPolicy.TurnDuration && TurnPeriod > 0)
+                || (DurationPolicy == EffectsDurationPolicy.Duration && Period > 0);
         }
 
         bool IsDurationalTypePolicy()
@@ -392,12 +395,9 @@ namespace GAS.Runtime
             return IsPeriodic() && PeriodExecution == null;
         }
 
-        bool IsDurationInvalid() => DurationPolicy == EffectsDurationPolicy.Duration && Duration <= 0;
-        bool IsPeriodInvalid() => IsDurationalPolicy() && Period < 0;
-
         bool IsGrantedAbilitiesInvalid()
         {
-            return IsDurationalPolicy() &&
+            return IsDurationalTypePolicy() &&
                    GrantedAbilities != null &&
                    GrantedAbilities.Any(abilityConfig => abilityConfig.AbilityAsset == null);
         }

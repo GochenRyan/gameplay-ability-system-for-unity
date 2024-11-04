@@ -216,6 +216,8 @@ namespace GAS.Editor
                     EffectsDurationPolicy.Duration => $"{ge.DurationRemaining():N2}/{ge.Duration:N2}(s)",
                     EffectsDurationPolicy.Infinite => "∞",
                     EffectsDurationPolicy.Instant => "N/A",
+                    EffectsDurationPolicy.MoveDuration => $"{ge.MoveDurationRemaining()}/{ge.MoveDuration}(move)",
+                    EffectsDurationPolicy.TurnDuration => $"{ge.TurnDurationRemaining()}/{ge.TurnDuration}(turn)",
                     _ => "Unknown"
                 };
                 var stackCountText = ge.Stacking.stackingType != StackingType.None ? $"[S:{ge.StackCount}]" : "";

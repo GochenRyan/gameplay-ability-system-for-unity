@@ -27,6 +27,8 @@ namespace GAS.Runtime
         public static GameplayTag State_Buff { get; } = new GameplayTag("State.Buff");
         public static GameplayTag State_Buff_AttackUp { get; } = new GameplayTag("State.Buff.AttackUp");
         public static GameplayTag State_Buff_DefenseUp { get; } = new GameplayTag("State.Buff.DefenseUp");
+        public static GameplayTag State_Buff_Move { get; } = new GameplayTag("State.Buff.Move");
+        public static GameplayTag State_Buff_Move_MoveAttackUp { get; } = new GameplayTag("State.Buff.Move.MoveAttackUp");
         public static GameplayTag State_Buff_SpeedUp { get; } = new GameplayTag("State.Buff.SpeedUp");
         public static GameplayTag State_Debuff { get; } = new GameplayTag("State.Debuff");
         public static GameplayTag State_Debuff_Cold { get; } = new GameplayTag("State.Debuff.Cold");
@@ -52,6 +54,8 @@ namespace GAS.Runtime
             ["State.Buff"] = State_Buff,
             ["State.Buff.AttackUp"] = State_Buff_AttackUp,
             ["State.Buff.DefenseUp"] = State_Buff_DefenseUp,
+            ["State.Buff.Move"] = State_Buff_Move,
+            ["State.Buff.Move.MoveAttackUp"] = State_Buff_Move_MoveAttackUp,
             ["State.Buff.SpeedUp"] = State_Buff_SpeedUp,
             ["State.Debuff"] = State_Debuff,
             ["State.Debuff.Cold"] = State_Debuff_Cold,

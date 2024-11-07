@@ -141,7 +141,7 @@ namespace GAS.Editor
                 if (selected != null && (selected.Value is DirectoryInfo || selected.Value is AbilityOverview))
                 {
                     var directoryInfo = selected.Value is AbilityOverview
-                        ? _directoryInfos[3]
+                        ? _directoryInfos[4]
                         : selected.Value as DirectoryInfo;
 
                     if (SirenixEditorGUI.ToolbarButton(new GUIContent("浏览")))

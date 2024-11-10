@@ -24,13 +24,25 @@ public class GameRunner : MonoBehaviour
         _input.Game.Load.performed += Load_performed;
     }
 
+    private void RegisterListener()
+    {
+        GameActor.Instance.ActorCreated += Actor_Created;
+        GameActor.Instance.ActorDestoryed += Actor_Destoryed;
+    }
+
+    private void UnregisterListener()
+    {
+        GameActor.Instance.ActorCreated -= Actor_Created;
+        GameActor.Instance.ActorDestoryed -= Actor_Destoryed;
+    }
+
     private void Load_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        GameOver();
-
         byte[] bytes = File.ReadAllBytes(SavePath);
         var gameActor = SerializationUtility.DeserializeValue<GameActor>(bytes, DataFormat.Binary);
-        GameActor.Instance.Load(gameActor);
+        GameActor.Instance.Init(gameActor);
+        RegisterListener(); 
+        GameActor.Instance.Load();
         GameplayAbilitySystem.GAS.Unpause();
         _isRunning = true;
     }
@@ -40,7 +52,6 @@ public class GameRunner : MonoBehaviour
         byte[] bytes = SerializationUtility.SerializeValue(GameActor.Instance, DataFormat.Binary);
         File.WriteAllBytes(SavePath, bytes);
         GameOver();
-        GameActor.Instance.DestroyAll();
     }
 
     private void Start()
@@ -55,8 +66,7 @@ public class GameRunner : MonoBehaviour
 
     public void StartGame()
     {
-        GameActor.Instance.ActorCreated += Actor_Created;
-        GameActor.Instance.ActorDestoryed += Actor_Destoryed;
+        RegisterListener();
 
         GameplayAbilitySystem.GAS.Unpause();
         GameActor.Instance.DestroyAll();
@@ -105,8 +115,10 @@ public class GameRunner : MonoBehaviour
     public void GameOver()
     {
         _isRunning = false;
-        GameActor.Instance.DestroyAll();
         GameplayAbilitySystem.GAS.Pause();
+        GameActor.Instance.DestroyAll();
+
+        UnregisterListener();
     }
 
     #region Player Management

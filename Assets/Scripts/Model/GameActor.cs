@@ -20,9 +20,14 @@ public class GameActor : Actor
 
     private GameActor(Actor parent) : base(parent)  { }
 
-    public void Load(GameActor actor)
+    public void Init(GameActor actor)
     {
-        foreach(var pair in Type2Children)
+        instance = actor;
+    }
+
+    public void Load()
+    {
+        foreach (var pair in Type2Children)
         {
             var Children = pair.Value;
             foreach (var child in Children)
@@ -37,7 +42,7 @@ public class GameActor : Actor
         foreach (var pair in Type2Children)
         {
             var Children = pair.Value;
-            foreach (var child in Children)
+            foreach (var child in Children.ToArray())
             {
                 child.Destroy();
             }
@@ -52,6 +57,8 @@ public class GameActor : Actor
     [NonSerialized, OdinSerialize]
     public Dictionary<Type, List<Actor>> Actors = new Dictionary<Type, List<Actor>>();
 
+    [NonSerialized]
     public Action<Type, Actor> ActorCreated;
+    [NonSerialized]
     public Action<Type, Actor> ActorDestoryed;
 }

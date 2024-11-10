@@ -25,12 +25,19 @@ namespace Model
             }
 
             GameActor.Actors[type].Add(this);
-            GameActor.Parent = parent;
+            this.Parent = parent;
+
+            if (!parent.Type2Children.ContainsKey(type))
+            {
+                parent.Type2Children[type] = new List<Actor>();
+            }
+
+            parent.Type2Children[type].Add(this);
         }
 
         public virtual void Create()
         {
-            GameActor.ActorCreated.Invoke(this.GetType(), this);
+            GameActor.ActorCreated?.Invoke(this.GetType(), this);
         }
 
         public virtual void Destroy() 
@@ -44,8 +51,11 @@ namespace Model
                     this.Parent = null;
                 }
             }
+
+            if (this is GameActor)
+                return;
             GameActor.Actors[type].Remove(this);
-            GameActor.ActorDestoryed.Invoke(type, this);
+            GameActor.ActorDestoryed?.Invoke(type, this);
         }
 
         protected virtual int GenerateID()
